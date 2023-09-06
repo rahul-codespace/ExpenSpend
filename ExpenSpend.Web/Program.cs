@@ -1,3 +1,4 @@
+using ExpenSpend.Domain.Context;
 using ExpenSpend.Web;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -43,5 +44,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Seed Database
+ExpenSpendDbInitializer.Seed(app);
 
 app.Run();
