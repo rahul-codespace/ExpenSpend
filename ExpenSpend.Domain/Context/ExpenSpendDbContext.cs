@@ -1,6 +1,8 @@
-﻿using ExpenSpend.Domain.Models.Friends;
+﻿using ExpenSpend.Domain.Models.Expenses;
+using ExpenSpend.Domain.Models.Friends;
 using ExpenSpend.Domain.Models.GroupMembers;
 using ExpenSpend.Domain.Models.Groups;
+using ExpenSpend.Domain.Models.Payments;
 using ExpenSpend.Domain.Models.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -14,6 +16,8 @@ namespace ExpenSpend.Domain.Context
         public DbSet<Friendship> Friendships { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<GroupMember> GroupMembers { get; set; }
+        public DbSet<Expense> Expenses { get; set; }
+        public DbSet<Payment> Payments { get; set; }
         public ExpenSpendDbContext(DbContextOptions<ExpenSpendDbContext> options) : base(options)
         {
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
@@ -53,6 +57,12 @@ namespace ExpenSpend.Domain.Context
                  .HasForeignKey(m => m.GroupId)
                  .OnDelete(DeleteBehavior.Cascade)
                  .IsRequired().HasPrincipalKey(g => g.Id);
+
+                b.HasMany(b => b.Expenses)
+                .WithOne(b => b.Group)
+                    .HasForeignKey(e => e.GroupId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired().HasPrincipalKey(g => g.Id);
             });
 
             builder.Entity<GroupMember>(b =>
@@ -63,6 +73,25 @@ namespace ExpenSpend.Domain.Context
                  .OnDelete(DeleteBehavior.Cascade)
                  .IsRequired().HasPrincipalKey(u => u.Id);
             });
+
+            builder.Entity<Expense>(b =>
+            {
+                b.HasMany(b => b.Payments)
+                 .WithOne(b => b.Expense)
+                 .HasForeignKey(p => p.ExpenseId)
+                 .OnDelete(DeleteBehavior.Cascade)
+                 .IsRequired().HasPrincipalKey(e => e.Id);
+            });
+
+            builder.Entity<Payment>(b =>
+            {
+                b.HasOne(b => b.OwenedBy)
+                 .WithMany()
+                 .HasForeignKey(p => p.OwenedById)
+                 .OnDelete(DeleteBehavior.Cascade)
+                 .IsRequired().HasPrincipalKey(u => u.Id);
+            });
+
         }
     }
 }
