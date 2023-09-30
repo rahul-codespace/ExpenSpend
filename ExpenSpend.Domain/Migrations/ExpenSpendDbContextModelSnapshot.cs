@@ -271,13 +271,13 @@ namespace ExpenSpend.Domain.Migrations
             modelBuilder.Entity("ExpenSpend.Domain.Models.Friends.Friendship", b =>
                 {
                     b.HasOne("ExpenSpend.Domain.Models.Users.ESUser", "Initiator")
-                        .WithMany("FriendshipsInitiated")
+                        .WithMany()
                         .HasForeignKey("InitiatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ExpenSpend.Domain.Models.Users.ESUser", "Recipient")
-                        .WithMany("FriendshipsReceived")
+                        .WithMany()
                         .HasForeignKey("RecipientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -336,13 +336,6 @@ namespace ExpenSpend.Domain.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ExpenSpend.Domain.Models.Users.ESUser", b =>
-                {
-                    b.Navigation("FriendshipsInitiated");
-
-                    b.Navigation("FriendshipsReceived");
                 });
 #pragma warning restore 612, 618
         }

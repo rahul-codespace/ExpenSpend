@@ -1,5 +1,6 @@
 ﻿
 
+using AutoMapper;
 using ExpenSpend.Core.Friend;
 using ExpenSpend.Repository.Friends;
 using ExpenSpend.Repository.User;
@@ -16,22 +17,25 @@ namespace ExpenSpend.Web.Controllers.Friends
     {
         private readonly IUserRepository _userRepository;
         private readonly IFriendRepository _friendRepository;
+        private readonly IMapper _mapper;
 
-        public FriendshipController(IUserRepository userRepository, IFriendRepository friendRepository)
+        public FriendshipController(IUserRepository userRepository, IFriendRepository friendRepository, IMapper mapper)
         {
             _userRepository = userRepository;
             _friendRepository = friendRepository;
+            _mapper = mapper;
         }
 
         [HttpGet("get-friendships")]
-        public async Task<IActionResult> GetFriendshipsAsync()
+        public async Task<ActionResult> GetFriendshipsAsync()
         {
             var currUser = await _userRepository.GetUserByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
             var friendships = await _friendRepository.GetFriendshipsAsync(currUser.Id);
+
             if (friendships != null)
             {
-                return Ok(friendships);
+                return Ok(_mapper.Map<List<GetFriendshipDto>>(friendships));
             }
             else
             {
@@ -47,7 +51,7 @@ namespace ExpenSpend.Web.Controllers.Friends
             var friendshipRequests = await _friendRepository.GetFriendshipRequestsAsync(currUser.Id);
             if (friendshipRequests != null)
             {
-                return Ok(friendshipRequests);
+                return Ok(_mapper.Map<List<GetFriendshipDto>>(friendshipRequests));
             }
             else
             {
@@ -63,7 +67,7 @@ namespace ExpenSpend.Web.Controllers.Friends
             var newFriendship = await _friendRepository.AddAsync(currUser.Id, friendshipDto.RecipientId);
             if (newFriendship != null)
             {
-                return Ok(newFriendship);
+                return Ok();
             }
             else
             {
@@ -77,7 +81,7 @@ namespace ExpenSpend.Web.Controllers.Friends
             var friendship = await _friendRepository.AcceptAsync(friendshipId);
             if (friendship != null)
             {
-                return Ok(friendship);
+                return Ok();
             }
             else
             {
@@ -91,7 +95,7 @@ namespace ExpenSpend.Web.Controllers.Friends
             var friendship = await _friendRepository.DeclineAsync(friendshipId);
             if (friendship != null)
             {
-                return Ok(friendship);
+                return Ok();
             }
             else
             {
@@ -105,7 +109,7 @@ namespace ExpenSpend.Web.Controllers.Friends
             var friendship = await _friendRepository.BlockAsync(friendshipId);
             if (friendship != null)
             {
-                return Ok(friendship);
+                return Ok();
             }
             else
             {
@@ -119,7 +123,7 @@ namespace ExpenSpend.Web.Controllers.Friends
             var friendship = await _friendRepository.DeleteAsync(friendshipId);
             if (friendship != null)
             {
-                return Ok(friendship);
+                return Ok();
             }
             else
             {

@@ -22,13 +22,13 @@ namespace ExpenSpend.Domain.Context
             {
                 // Set up the many-to-many relationship for ESUser and Friendship
                 b.HasOne(f => f.Initiator)
-                 .WithMany(u => u.FriendshipsInitiated)
+                 .WithMany()
                  .HasForeignKey(f => f.InitiatorId)
                  .OnDelete(DeleteBehavior.Cascade)
                  .IsRequired().HasPrincipalKey(u => u.Id);
 
                 b.HasOne(f => f.Recipient)
-                 .WithMany(u => u.FriendshipsReceived)
+                 .WithMany()
                  .HasForeignKey(f => f.RecipientId)
                  .OnDelete(DeleteBehavior.Cascade)
                  .IsRequired().HasPrincipalKey(u => u.Id);
