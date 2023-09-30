@@ -2,6 +2,7 @@
 using AutoMapper;
 using ExpenSpend.Core.Account;
 using ExpenSpend.Core.User;
+using ExpenSpend.Domain.Models.Users;
 using ExpenSpend.Domain.Shared.Account;
 using ExpenSpend.Repository.Account;
 using ExpenSpend.Service.Email.Interface;
@@ -28,7 +29,12 @@ public class AccountController: ControllerBase
     [HttpPost]
     public async Task<IActionResult> RegisterUserAsync(CreateUserDto input)
     {
-        var user = _mapper.Map<Domain.Models.Users.User>(input);
+        var userExists = await _accountRepository.FindByEmail(input.Email);
+        if (userExists != null)
+        {
+            return BadRequest(AccConsts.UserExists);
+        }
+        var user = _mapper.Map<ESUser>(input);
         var registrationResult = await _accountRepository.RegisterUserAsync(user, input.Password);
 
         if (registrationResult.Succeeded)

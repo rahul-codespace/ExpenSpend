@@ -8,9 +8,9 @@ namespace ExpenSpend.Web
     {
         public ExpenSpendMapper()
         {
-            CreateMap<User, CreateUserDto>().ForMember(dest => dest.Password, opt => opt.Ignore()).ReverseMap();
-            CreateMap<User, UpdateUserDto>().ReverseMap();
-            CreateMap<User, GetUserDto>();
+            CreateMap<ESUser, CreateUserDto>().ForMember(dest => dest.Password, opt => opt.Ignore()).ReverseMap();
+            CreateMap<ESUser, UpdateUserDto>().ReverseMap();
+            CreateMap<ESUser, GetUserDto>();
         }
     }
 }

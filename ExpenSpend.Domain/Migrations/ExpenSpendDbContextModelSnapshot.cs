@@ -65,7 +65,7 @@ namespace ExpenSpend.Domain.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ExpenSpend.Domain.Models.Users.User", b =>
+            modelBuilder.Entity("ExpenSpend.Domain.Models.Users.ESUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -270,13 +270,13 @@ namespace ExpenSpend.Domain.Migrations
 
             modelBuilder.Entity("ExpenSpend.Domain.Models.Friends.Friendship", b =>
                 {
-                    b.HasOne("ExpenSpend.Domain.Models.Users.User", "Initiator")
+                    b.HasOne("ExpenSpend.Domain.Models.Users.ESUser", "Initiator")
                         .WithMany("FriendshipsInitiated")
                         .HasForeignKey("InitiatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ExpenSpend.Domain.Models.Users.User", "Recipient")
+                    b.HasOne("ExpenSpend.Domain.Models.Users.ESUser", "Recipient")
                         .WithMany("FriendshipsReceived")
                         .HasForeignKey("RecipientId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -298,7 +298,7 @@ namespace ExpenSpend.Domain.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("ExpenSpend.Domain.Models.Users.User", null)
+                    b.HasOne("ExpenSpend.Domain.Models.Users.ESUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -307,7 +307,7 @@ namespace ExpenSpend.Domain.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("ExpenSpend.Domain.Models.Users.User", null)
+                    b.HasOne("ExpenSpend.Domain.Models.Users.ESUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -322,7 +322,7 @@ namespace ExpenSpend.Domain.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ExpenSpend.Domain.Models.Users.User", null)
+                    b.HasOne("ExpenSpend.Domain.Models.Users.ESUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -331,14 +331,14 @@ namespace ExpenSpend.Domain.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("ExpenSpend.Domain.Models.Users.User", null)
+                    b.HasOne("ExpenSpend.Domain.Models.Users.ESUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ExpenSpend.Domain.Models.Users.User", b =>
+            modelBuilder.Entity("ExpenSpend.Domain.Models.Users.ESUser", b =>
                 {
                     b.Navigation("FriendshipsInitiated");
 

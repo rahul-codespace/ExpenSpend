@@ -28,7 +28,7 @@ public class UserController : ControllerBase
         var user = await _userRepository.GetUserByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
         if (user == null)
         {
-            return NotFound("User not found");
+            return NotFound("ESUser not found");
         }
         return Ok(_mapper.Map<GetUserDto>(user));
     }
@@ -46,7 +46,7 @@ public class UserController : ControllerBase
         var user = await _userRepository.GetUserByIdAsync(id);
         if (user == null)
         {
-            return NotFound("User not found");
+            return NotFound("ESUser not found");
         }
         return Ok(_mapper.Map<GetUserDto>(user));
     }
@@ -57,14 +57,14 @@ public class UserController : ControllerBase
         var user = await _userRepository.GetUserByIdAsync(id);
         if (user == null)
         {
-            return NotFound("User not found");
+            return NotFound("ESUser not found");
         }
         
         var result = await _userRepository.UpdateUserAsync(_mapper.Map(input, user));
         
         if (result.Succeeded)
         {
-            return Ok("User updated successfully");
+            return Ok("ESUser updated successfully");
         }
         return BadRequest(result.Errors);
     }
@@ -75,12 +75,12 @@ public class UserController : ControllerBase
         var user = await _userRepository.GetUserByIdAsync(id);
         if (user == null)
         {
-            return NotFound("User not found");
+            return NotFound("ESUser not found");
         }
         var result = await _userRepository.DeleteUserAsync(user);
         if (result.Succeeded)
         {
-            return Ok("User deleted successfully");
+            return Ok("ESUser deleted successfully");
         }
         return BadRequest(result.Errors);
     }

@@ -23,22 +23,22 @@ namespace ExpenSpend.Domain.Context
                     context.Roles.AddRange(new List<IdentityRole<Guid>>()
                     {
                         new IdentityRole<Guid>() {Name = "Admin", ConcurrencyStamp = "1", NormalizedName = "Admin"},
-                        new IdentityRole<Guid>() {Name = "User", ConcurrencyStamp = "2", NormalizedName = "User"}
+                        new IdentityRole<Guid>() {Name = "ESUser", ConcurrencyStamp = "2", NormalizedName = "ESUser"}
                     });
                     await context.SaveChangesAsync();
                 }
 
                 // Seed Users
 
-                var hasher = new PasswordHasher<User>();
+                var hasher = new PasswordHasher<ESUser>();
                 if (!context.Users.Any())
                 {
-                    context.Users.AddRange(new List<User>()
+                    context.Users.AddRange(new List<ESUser>()
                     {
-                        new User() {
+                        new ESUser() {
                             Email = "admin@asp.net",
                             FirstName = "Admin",
-                            LastName = "User",
+                            LastName = "ESUser",
                             UserName = "admin",
                             NormalizedUserName = "ADMIN",
                             ConcurrencyStamp ="1",
@@ -46,16 +46,16 @@ namespace ExpenSpend.Domain.Context
                             LockoutEnabled = true,
                             PasswordHash = hasher.HashPassword(null,"Admin@123")
                         },
-                        new User() {
+                        new ESUser() {
                             Email = "user@asp.net",
-                            FirstName = "User",
-                            LastName = "User",
+                            FirstName = "ESUser",
+                            LastName = "ESUser",
                             UserName = "user",
                             NormalizedUserName = "USER",
                             ConcurrencyStamp ="2",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
-                            PasswordHash = hasher.HashPassword(null, "User@123")
+                            PasswordHash = hasher.HashPassword(null, "ESUser@123")
                         } 
                     });
                     await context.SaveChangesAsync();
@@ -66,7 +66,7 @@ namespace ExpenSpend.Domain.Context
                 {
                     var adminRole = await context.Roles.FirstOrDefaultAsync(x => x.Name == "Admin");
                     var adminUser = await context.Users.FirstOrDefaultAsync(x => x.UserName == "admin");
-                    var userRole = await context.Roles.FirstOrDefaultAsync(x => x.Name == "User");
+                    var userRole = await context.Roles.FirstOrDefaultAsync(x => x.Name == "ESUser");
                     var normalUserRole = await context.Users.FirstOrDefaultAsync(x => x.UserName == "user");
 
                     context.UserRoles.AddRange(new List<IdentityUserRole<Guid>>{

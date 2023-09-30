@@ -8,6 +8,8 @@ public class AccConsts
     public static readonly string UserNotFound = "User not found";
     public static readonly string ConfEmailFailed = "Email confirmation failed";
     public static readonly string PasswordResetReqSuccess = "Password reset request successful, please check your email for further instructions";
-    
-    
+    public static readonly string UserExists = "User with this email already exists";
+
+
+
 }

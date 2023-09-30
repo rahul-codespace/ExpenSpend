@@ -27,7 +27,7 @@ public static class ExpenSpendWebConfigurations
 
     public static void AddIdentityConfig(this IServiceCollection services)
     {
-        services.AddIdentity<User, IdentityRole<Guid>>(options => options.SignIn.RequireConfirmedEmail = true)
+        services.AddIdentity<ESUser, IdentityRole<Guid>>(options => options.SignIn.RequireConfirmedEmail = true)
             .AddEntityFrameworkStores<ExpenSpendDbContext>()
             .AddDefaultTokenProviders();
     }

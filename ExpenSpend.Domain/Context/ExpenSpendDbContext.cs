@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ExpenSpend.Domain.Context
 {
-    public class ExpenSpendDbContext : IdentityDbContext<User,IdentityRole<Guid>,Guid>
+    public class ExpenSpendDbContext : IdentityDbContext<ESUser,IdentityRole<Guid>,Guid>
     {
-        public DbSet<User> Users { get; set; }
+        public DbSet<ESUser> Users { get; set; }
         public DbSet<Friendship> Friendships { get; set; }
         public ExpenSpendDbContext(DbContextOptions<ExpenSpendDbContext> options) : base(options)
         {
@@ -20,7 +20,7 @@ namespace ExpenSpend.Domain.Context
 
             builder.Entity<Friendship>(b =>
             {
-                // Set up the many-to-many relationship for User and Friendship
+                // Set up the many-to-many relationship for ESUser and Friendship
                 b.HasOne(f => f.Initiator)
                  .WithMany(u => u.FriendshipsInitiated)
                  .HasForeignKey(f => f.InitiatorId)
