@@ -4,6 +4,7 @@ using ExpenSpend.Domain.Context;
 using ExpenSpend.Domain.Models;
 using ExpenSpend.Domain.Models.Users;
 using ExpenSpend.Repository.Account;
+using ExpenSpend.Repository.Friends;
 using ExpenSpend.Repository.User;
 using ExpenSpend.Service.Email;
 using ExpenSpend.Service.Email.Interface;
@@ -65,6 +66,7 @@ public static class ExpenSpendWebConfigurations
         services.AddScoped<IAccountRepository, AccountRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<IFriendRepository, FriendRepository>();
     }
     
     public static void AddSwaggerConfig(this IServiceCollection services)
