@@ -1,9 +1,9 @@
 ﻿
 
 using AutoMapper;
-using ExpenSpend.Core.Friend;
+using ExpenSpend.Core.Friends;
 using ExpenSpend.Repository.Friends;
-using ExpenSpend.Repository.User;
+using ExpenSpend.Repository.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;

@@ -8,9 +8,7 @@ public class FriendRepository : IFriendRepository
 {
     private readonly ExpenSpendDbContext _context;
 
-    public FriendRepository(
-        ExpenSpendDbContext context
-        )
+    public FriendRepository(ExpenSpendDbContext context)
     {
         _context = context;
     }

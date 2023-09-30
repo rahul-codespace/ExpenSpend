@@ -1,13 +1,15 @@
 ﻿using System.Text;
-using ExpenSpend.Core.Email;
+using ExpenSpend.Core.Emails;
 using ExpenSpend.Domain.Context;
 using ExpenSpend.Domain.Models;
 using ExpenSpend.Domain.Models.Users;
-using ExpenSpend.Repository.Account;
+using ExpenSpend.Repository.Accounts;
 using ExpenSpend.Repository.Friends;
-using ExpenSpend.Repository.User;
-using ExpenSpend.Service.Email;
-using ExpenSpend.Service.Email.Interface;
+using ExpenSpend.Repository.GroupMembers;
+using ExpenSpend.Repository.Groups;
+using ExpenSpend.Repository.Users;
+using ExpenSpend.Service.Emails;
+using ExpenSpend.Service.Emails.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -67,6 +69,8 @@ public static class ExpenSpendWebConfigurations
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IFriendRepository, FriendRepository>();
+        services.AddScoped<IGroupRepository, GroupRepository>();
+        services.AddScoped<IGroupMemberRepository, GroupMemberRepository>();
     }
     
     public static void AddSwaggerConfig(this IServiceCollection services)
