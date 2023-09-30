@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ExpenSpend.Web.Controllers.User;
 
-[Route("api/[controller]/[action]")]
+[Route("api/user")]
 [ApiController]
 [Authorize]
 public class UserController : ControllerBase
@@ -22,65 +22,65 @@ public class UserController : ControllerBase
         _mapper = mapper;
     }
     
-    [HttpGet]
+    [HttpGet("me")]
     public async Task<IActionResult> GetLoggedInUser()
     {
         var user = await _userRepository.GetUserByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
         if (user == null)
         {
-            return NotFound("ESUser not found");
+            return NotFound("User not found");
         }
         return Ok(_mapper.Map<GetUserDto>(user));
     }
     
-    [HttpGet]
+    [HttpGet("users")]
     public async Task<IActionResult> GetAllUsers()
     {
         var users = await _userRepository.GetAllUsersAsync();
         return Ok(users);
     }
     
-    [HttpGet]
+    [HttpGet("user")]
     public async Task<IActionResult> GetUserById(string id)
     {
         var user = await _userRepository.GetUserByIdAsync(id);
         if (user == null)
         {
-            return NotFound("ESUser not found");
+            return NotFound("User not found");
         }
         return Ok(_mapper.Map<GetUserDto>(user));
     }
     
-    [HttpPut]
+    [HttpPut("update")]
     public async Task<IActionResult> UpdateUser(string id, UpdateUserDto input)
     {
         var user = await _userRepository.GetUserByIdAsync(id);
         if (user == null)
         {
-            return NotFound("ESUser not found");
+            return NotFound("User not found");
         }
         
         var result = await _userRepository.UpdateUserAsync(_mapper.Map(input, user));
         
         if (result.Succeeded)
         {
-            return Ok("ESUser updated successfully");
+            return Ok("User updated successfully");
         }
         return BadRequest(result.Errors);
     }
     
-    [HttpDelete]
+    [HttpDelete("delete")]
     public async Task<IActionResult> DeleteUser(string id)
     {
         var user = await _userRepository.GetUserByIdAsync(id);
         if (user == null)
         {
-            return NotFound("ESUser not found");
+            return NotFound("User not found");
         }
         var result = await _userRepository.DeleteUserAsync(user);
         if (result.Succeeded)
         {
-            return Ok("ESUser deleted successfully");
+            return Ok("User deleted successfully");
         }
         return BadRequest(result.Errors);
     }
