@@ -14,6 +14,7 @@ namespace ExpenSpend.Web
             CreateMap<ESUser, UpdateUserDto>().ReverseMap();
             CreateMap<ESUser, GetUserDto>();
             CreateMap<Friendship, GetFriendshipDto>();
+            CreateMap<CreateFriendshipDto, Friendship>();
         }
     }
 }

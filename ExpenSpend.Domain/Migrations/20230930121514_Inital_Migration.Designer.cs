@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ExpenSpend.Domain.Migrations
 {
     [DbContext(typeof(ExpenSpendDbContext))]
-    [Migration("20230930100638_Inital_Migration")]
+    [Migration("20230930121514_Inital_Migration")]
     partial class Inital_Migration
     {
         /// <inheritdoc />
@@ -274,13 +274,13 @@ namespace ExpenSpend.Domain.Migrations
             modelBuilder.Entity("ExpenSpend.Domain.Models.Friends.Friendship", b =>
                 {
                     b.HasOne("ExpenSpend.Domain.Models.Users.ESUser", "Initiator")
-                        .WithMany("FriendshipsInitiated")
+                        .WithMany()
                         .HasForeignKey("InitiatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ExpenSpend.Domain.Models.Users.ESUser", "Recipient")
-                        .WithMany("FriendshipsReceived")
+                        .WithMany()
                         .HasForeignKey("RecipientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -339,13 +339,6 @@ namespace ExpenSpend.Domain.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ExpenSpend.Domain.Models.Users.ESUser", b =>
-                {
-                    b.Navigation("FriendshipsInitiated");
-
-                    b.Navigation("FriendshipsReceived");
                 });
 #pragma warning restore 612, 618
         }
