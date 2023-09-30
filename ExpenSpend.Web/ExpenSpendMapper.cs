@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using ExpenSpend.Core.Friend;
-using ExpenSpend.Core.User;
+using ExpenSpend.Core.Friends;
+using ExpenSpend.Core.Users;
 using ExpenSpend.Domain.Models.Friends;
 using ExpenSpend.Domain.Models.Users;
 

@@ -16,6 +16,8 @@ namespace ExpenSpend.Domain.Context
         public DbSet<GroupMember> GroupMembers { get; set; }
         public ExpenSpendDbContext(DbContextOptions<ExpenSpendDbContext> options) : base(options)
         {
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+            AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
