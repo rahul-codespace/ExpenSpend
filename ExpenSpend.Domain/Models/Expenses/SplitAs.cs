@@ -2,6 +2,7 @@
 
 public enum SplitAs
 {
-    Equal,
-    Percentage
+    Equally,
+    ByAmount,
+    ByPercentage
 }
