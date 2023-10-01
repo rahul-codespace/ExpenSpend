@@ -1,8 +1,7 @@
-﻿using ExpenSpend.Core.Emails;
-using ExpenSpend.Service.Emails.Interfaces;
+﻿using ExpenSpend.Service.Emails.Interfaces;
 using MimeKit;
 using MailKit.Net.Smtp;
-
+using ExpenSpend.Core.DTOs.Emails;
 
 namespace ExpenSpend.Service.Emails;
 
@@ -21,7 +20,7 @@ public class EmailService : IEmailService
 
     public async Task<MessageDto> CreateEmailValidationTemplateMessage(string email, string confirmationCode)
     {
-        string emailTemplateFileName = "..\\ExpenSpend.Domain.Shared\\Account\\EmailFormat.html";
+        string emailTemplateFileName = "..\\ExpenSpend.Core\\DTOs\\Accounts\\Const\\EmailFormat.html";
         string emailBody;
 
         using (StreamReader reader = new StreamReader(emailTemplateFileName))
@@ -36,7 +35,7 @@ public class EmailService : IEmailService
 
     public async Task<string> EmailConfirmationPageTemplate()
     {
-        string emailTemplateFileName = "..\\ExpenSpend.Domain.Shared\\Account\\EmailConfResponse.html";
+        string emailTemplateFileName = "..\\ExpenSpend.Core\\DTOs\\Accounts\\Const\\EmailConfResponse.html";
         string htmlBody;
 
         using (StreamReader reader = new StreamReader(emailTemplateFileName))
@@ -85,7 +84,7 @@ public class EmailService : IEmailService
     }
     public async void SandPasswordChangeNotification(string email, string userName)
     {
-        string emailTemplateFileName = "..\\ExpenSpend.Domain.Shared\\Account\\PasswordChangeNotification.html";
+        string emailTemplateFileName = "..\\ExpenSpend.Core\\DTOs\\Accounts\\Const\\PasswordChangeNotification.html";
         string emailBody;
 
         using (StreamReader reader = new StreamReader(emailTemplateFileName))
