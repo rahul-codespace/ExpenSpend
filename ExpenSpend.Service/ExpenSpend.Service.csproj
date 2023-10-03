@@ -7,11 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="NETCore.MailKit" Version="2.1.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.15.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ExpenSpend.Core\ExpenSpend.Core.csproj" />
+    <ProjectReference Include="..\ExpenSpend.Data\ExpenSpend.Data.csproj" />
+    <ProjectReference Include="..\ExpenSpend.Domain\ExpenSpend.Domain.csproj" />
   </ItemGroup>
 
 </Project>

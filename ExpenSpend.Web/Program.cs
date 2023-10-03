@@ -1,18 +1,13 @@
-using ExpenSpend.Domain.Context;
+using ExpenSpend.Data.Context;
 using ExpenSpend.Web;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Register AutoMapper for DTO-entity mapping.
 builder.Services.AddAutoMapper(typeof(Program));
 
-builder.Services.AddControllers().AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-    options.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals;
-    // Other options as needed
-});
+// Setup controller configuration
+builder.Services.AddControllerConfig();
 
 var configuration = builder.Configuration;
 

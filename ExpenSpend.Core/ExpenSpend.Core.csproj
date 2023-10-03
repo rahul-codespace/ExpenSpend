@@ -11,12 +11,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="7.0.10" />
     <PackageReference Include="MimeKit" Version="3.2.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\ExpenSpend.Domain.Shared\ExpenSpend.Domain.Shared.csproj" />
-    <ProjectReference Include="..\ExpenSpend.Domain\ExpenSpend.Domain.csproj" />
   </ItemGroup>
 
 </Project>
