@@ -66,7 +66,7 @@ namespace ExpenSpend.Service
         {
             return await _userManager.CreateAsync(user, password);
         }
-        public async Task<Microsoft.AspNetCore.Identity.SignInResult> LoginUserAsync(string email, string password)
+        public async Task<SignInResult> LoginUserAsync(string email, string password)
         {
             return await _signInManager.PasswordSignInAsync(email, password, false, false);
         }
@@ -112,6 +112,8 @@ namespace ExpenSpend.Service
         {
             return await _userManager.GeneratePasswordResetTokenAsync(user);
         }
+
+        // Private method to generate JWT token options...
         private JwtSecurityToken GenerateTokenOptions(List<Claim> authClaims, DateTime expires)
         {
             var key = Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]!);
