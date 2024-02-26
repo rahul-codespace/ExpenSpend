@@ -1,6 +1,5 @@
 ﻿using ExpenSpend.Core.DTOs.GroupMembers;
 using ExpenSpend.Domain.Models.GroupMembers;
-using ExpenSpend.Domain.Models.Groups;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,12 +13,10 @@ namespace ExpenSpend.Web.Controllers
     public class GroupMemberController : ControllerBase
     {
         private readonly IGroupMemberAppService _groupMemberService;
-        private readonly IGroupAppService _groupService;
 
-        public GroupMemberController(IGroupMemberAppService groupMemberService, IGroupAppService groupService)
+        public GroupMemberController(IGroupMemberAppService groupMemberService)
         {
             _groupMemberService = groupMemberService;
-            _groupService = groupService;
         }
         [HttpGet("group-members")]
         public async Task<IActionResult> GetAllGroupMembers()

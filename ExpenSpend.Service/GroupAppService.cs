@@ -29,9 +29,15 @@ public class GroupAppService : IGroupAppService
     {
         return _mapper.Map<List<GetGroupDto>>(await _groupRepository.GetAllAsync());
     }
-    public async Task<GetGroupDto> GetGroupByIdAsync(Guid id)
+    public async Task<GetGroupDto?> GetGroupByIdAsync(Guid id)
     {
-        return _mapper.Map<GetGroupDto>(await _groupRepository.GetByIdAsync(id));
+        var result =  _mapper.Map<GetGroupDto>(await _groupRepository.GetByIdAsync(id));
+        if (result != null)
+        {
+            return result;
+        }
+
+        return null;
     }
     public async Task<ApiResponse<GetGroupDto>> CreateGroupAsync(CreateGroupDto input)
     {
@@ -41,7 +47,7 @@ public class GroupAppService : IGroupAppService
         {
             Name = input.Name,
             About = input.About,
-            CreatedBy = currUser.Id,
+            CreatedBy = currUser?.Id,
             CreatedAt = DateTime.Now,
         };
         var createdGroup = await _groupRepository.CreateAsync(group);
@@ -78,7 +84,7 @@ public class GroupAppService : IGroupAppService
         {
             Name = input.Name,
             About = input.About,
-            CreatedBy = currUser.Id,
+            CreatedBy = currUser?.Id,
             CreatedAt = DateTime.Now,
         };
         var createdGroup = await _groupRepository.CreateAsync(group);

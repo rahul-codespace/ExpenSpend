@@ -1,9 +1,5 @@
-﻿
-
-using AutoMapper;
-using ExpenSpend.Core.DTOs.Friends;
+﻿using ExpenSpend.Core.DTOs.Friends;
 using ExpenSpend.Domain.Models.Friends;
-using ExpenSpend.Domain.Models.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -16,15 +12,11 @@ namespace ExpenSpend.Web.Controllers
     [Authorize]
     public class FriendshipController : ControllerBase
     {
-        private readonly IUserAppService _userService;
         private readonly IFriendAppService _friendService;
-        private readonly IMapper _mapper;
 
-        public FriendshipController(IUserAppService userService, IFriendAppService friendService, IMapper mapper)
+        public FriendshipController(IFriendAppService friendService)
         {
-            _userService = userService;
             _friendService = friendService;
-            _mapper = mapper;
         }
 
         [HttpGet("get-friendships")]

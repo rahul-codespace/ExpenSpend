@@ -23,21 +23,21 @@ namespace ExpenSpend.Domain.Models.Users
         /// <param name="user">The user whose email is being confirmed.</param>
         /// <param name="token">The email confirmation token.</param>
         /// <returns>The result of the email confirmation operation.</returns>
-        Task<IdentityResult> ConfirmEmailAsync(ESUser user, string token);
+        Task<IdentityResult> ConfirmEmailAsync(ESUser? user, string token);
 
         /// <summary>
         /// Generates an email confirmation token for a user asynchronously.
         /// </summary>
         /// <param name="user">The user for whom the token is generated.</param>
         /// <returns>The generated email confirmation token.</returns>
-        Task<string> GenerateEmailConfirmationTokenAsync(ESUser user);
+        Task<string> GenerateEmailConfirmationTokenAsync(ESUser? user);
 
         /// <summary>
         /// Generates a password reset token for a user asynchronously.
         /// </summary>
         /// <param name="user">The user for whom the token is generated.</param>
         /// <returns>The generated password reset token.</returns>
-        Task<string> GenerateResetToken(ESUser user);
+        Task<string> GenerateResetToken(ESUser? user);
 
         /// <summary>
         /// Logs in a user asynchronously using their email and password.
@@ -54,13 +54,13 @@ namespace ExpenSpend.Domain.Models.Users
         /// <param name="password">The user's password.</param>
         /// <param name="rememberMe">Indicates whether to remember the user's login.</param>
         /// <returns>The generated JWT token.</returns>
-        Task<JwtSecurityToken> LoginUserJwtAsync(string userName, string password, bool rememberMe);
+        Task<JwtSecurityToken?> LoginUserJwtAsync(string userName, string password, bool rememberMe);
 
         /// <summary>
         /// Logs out the currently authenticated user asynchronously.
         /// </summary>
         Task LogoutUserAsync();
-        Task<IdentityResult> RegisterUserAsync(ESUser user, string password);
+        Task<IdentityResult> RegisterUserAsync(ESUser? user, string password);
 
         /// <summary>
         /// Resets a user's password asynchronously.
@@ -69,6 +69,6 @@ namespace ExpenSpend.Domain.Models.Users
         /// <param name="token">The reset token.</param>
         /// <param name="newPassword">The new password.</param>
         /// <returns>The result of the password reset operation.</returns>
-        Task<IdentityResult> ResetPasswordAsync(ESUser user, string token, string newPassword);
+        Task<IdentityResult> ResetPasswordAsync(ESUser? user, string token, string newPassword);
     }
 }

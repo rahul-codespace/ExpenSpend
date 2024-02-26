@@ -92,8 +92,13 @@ public class UserAppService : IUserAppService
         };
     }
 
-    public async Task<ESUser> GetUserByEmailAsync(string email)
+    public async Task<ESUser?> GetUserByEmailAsync(string email)
     {
-        return await _userManager.FindByEmailAsync(email);
+        var result = await _userManager.FindByEmailAsync(email);
+        if (result != null)
+        {
+            return result;
+        }
+        return null;
     }
 }
