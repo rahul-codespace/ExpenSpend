@@ -20,7 +20,7 @@ namespace ExpenSpend.Domain.Models.Groups
         /// </summary>
         /// <param name="id">The unique identifier of the group to retrieve.</param>
         /// <returns>The group data transfer object.</returns>
-        Task<GetGroupDto> GetGroupByIdAsync(Guid id);
+        Task<GetGroupDto?> GetGroupByIdAsync(Guid id);
 
         /// <summary>
         /// Creates a new group asynchronously.

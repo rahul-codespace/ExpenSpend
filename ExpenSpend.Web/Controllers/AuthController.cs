@@ -1,7 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using ExpenSpend.Core.DTOs.Accounts;
 using ExpenSpend.Core.DTOs.Accounts.Const;
 using ExpenSpend.Core.DTOs.Users;
@@ -19,12 +18,10 @@ public class AuthController : ControllerBase
 
     private readonly IAuthAppService _authService;
     private readonly IUserAppService _userService;
-    private readonly IMapper _mapper;
     private readonly IEmailService _emailService;
-    public AuthController(IAuthAppService authService, IMapper mapper, IEmailService emailService, IUserAppService userService)
+    public AuthController(IAuthAppService authService, IEmailService emailService, IUserAppService userService)
     {
         _authService = authService;
-        _mapper = mapper;
         _emailService = emailService;
         _userService = userService;
     }
@@ -130,11 +127,11 @@ public class AuthController : ControllerBase
         emailConfirmationResult.Errors.ToList().ForEach(error => ModelState.AddModelError(error.Code, error.Description));
         return Content(ModelState.ToString()!);
     }
-    private async Task SendEmailConfAsync(ESUser user)
+    private async Task SendEmailConfAsync(ESUser? user)
     {
         var emailConfirmationToken = await _authService.GenerateEmailConfirmationTokenAsync(user);
-        var confirmationLink = Url.Action(nameof(ConfirmEmail), "Auth", new { token = emailConfirmationToken, email = user.Email }, Request.Scheme);
-        var emailMessage = await _emailService.CreateEmailValidationTemplateMessage(user.Email!, confirmationLink!);
+        var confirmationLink = Url.Action(nameof(ConfirmEmail), "Auth", new { token = emailConfirmationToken, email = user?.Email }, Request.Scheme);
+        var emailMessage = await _emailService.CreateEmailValidationTemplateMessage(user?.Email!, confirmationLink!);
         _emailService.SendEmail(emailMessage);
     }
 }

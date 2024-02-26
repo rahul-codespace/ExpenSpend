@@ -34,7 +34,7 @@ public interface IUserAppService
     /// </summary>
     /// <param name="email">The email address of the user to retrieve.</param>
     /// <returns>The user associated with the provided email.</returns>
-    Task<ESUser> GetUserByEmailAsync(string email);
+    Task<ESUser?> GetUserByEmailAsync(string email);
 
     /// <summary>
     /// Retrieves a user by their unique identifier asynchronously.

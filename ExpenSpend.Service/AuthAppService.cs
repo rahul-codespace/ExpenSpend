@@ -16,7 +16,7 @@ namespace ExpenSpend.Service
 {
     public class AuthAppService : IAuthAppService
     {
-        private readonly UserManager<ESUser> _userManager;
+        private readonly UserManager<ESUser?> _userManager;
         private readonly SignInManager<ESUser> _signInManager;
         private readonly IConfiguration _configuration;
         private readonly IEmailService _emailService;
@@ -27,7 +27,7 @@ namespace ExpenSpend.Service
             IHttpContextAccessor contextAccessor,
             IMapper mapper,
             IEmailService emailService,
-            UserManager<ESUser> userManager,
+            UserManager<ESUser?> userManager,
             SignInManager<ESUser> signInManager,
             IConfiguration configuration
         ){
@@ -62,7 +62,7 @@ namespace ExpenSpend.Service
             
         }
 
-        public async Task<IdentityResult> RegisterUserAsync(ESUser user, string password)
+        public async Task<IdentityResult> RegisterUserAsync(ESUser? user, string password)
         {
             return await _userManager.CreateAsync(user, password);
         }
@@ -70,7 +70,7 @@ namespace ExpenSpend.Service
         {
             return await _signInManager.PasswordSignInAsync(email, password, false, false);
         }
-        public async Task<JwtSecurityToken> LoginUserJwtAsync(string userName, string password, bool rememberMe)
+        public async Task<JwtSecurityToken?> LoginUserJwtAsync(string userName, string password, bool rememberMe)
         {
             var user = await _userManager.FindByNameAsync(userName);
             if (user == null || !await _userManager.CheckPasswordAsync(user, password))
@@ -96,25 +96,25 @@ namespace ExpenSpend.Service
         {
             await _signInManager.SignOutAsync();
         }
-        public async Task<IdentityResult> ResetPasswordAsync(ESUser user, string token, string newPassword)
+        public async Task<IdentityResult> ResetPasswordAsync(ESUser? user, string token, string newPassword)
         {
             return await _userManager.ResetPasswordAsync(user, token, newPassword);
         }
-        public async Task<string> GenerateEmailConfirmationTokenAsync(ESUser user)
+        public async Task<string> GenerateEmailConfirmationTokenAsync(ESUser? user)
         {
             return await _userManager.GenerateEmailConfirmationTokenAsync(user);
         }
-        public async Task<IdentityResult> ConfirmEmailAsync(ESUser user, string token)
+        public async Task<IdentityResult> ConfirmEmailAsync(ESUser? user, string token)
         {
             return await _userManager.ConfirmEmailAsync(user, token);
         }
-        public async Task<string> GenerateResetToken(ESUser user)
+        public async Task<string> GenerateResetToken(ESUser? user)
         {
             return await _userManager.GeneratePasswordResetTokenAsync(user);
         }
 
         // Private method to generate JWT token options...
-        private JwtSecurityToken GenerateTokenOptions(List<Claim> authClaims, DateTime expires)
+        private JwtSecurityToken? GenerateTokenOptions(List<Claim> authClaims, DateTime expires)
         {
             var key = Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]!);
             var tokenOptions = new JwtSecurityToken(

@@ -15,14 +15,10 @@ namespace ExpenSpend.Web.Controllers
     public class GroupController : ControllerBase
     {
         private readonly IGroupAppService _groupAppService;
-        private readonly IGroupMemberAppService _groupMemberService;
-        private readonly IExpenSpendRepository<Group> _groupRepository;
 
-        public GroupController(IGroupAppService groupAppService, IGroupMemberAppService groupMemberService, IExpenSpendRepository<Group> groupRepository)
+        public GroupController(IGroupAppService groupAppService)
         {
             _groupAppService = groupAppService;
-            _groupMemberService = groupMemberService;
-            _groupRepository = groupRepository;
         }
 
         [HttpGet("groups")]
@@ -35,7 +31,7 @@ namespace ExpenSpend.Web.Controllers
         public async Task<IActionResult> GetGroupById(Guid id)
         {
             var group = await _groupAppService.GetGroupByIdAsync(id);
-            if (group != null)
+            if (group == null)
             {
                 return Ok(group);
             }

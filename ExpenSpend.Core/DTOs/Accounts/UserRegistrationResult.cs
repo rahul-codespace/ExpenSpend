@@ -1,16 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ExpenSpend.Core.DTOs.Accounts
 {
     public class UserRegistrationResult
     {
         public bool IsSuccess { get; set; }
-        public List<RegistrationError> Errors { get; set; }
+        public List<RegistrationError>? Errors { get; set; }
 
         public static UserRegistrationResult Success()
         {
@@ -29,8 +24,8 @@ namespace ExpenSpend.Core.DTOs.Accounts
     }
     public class RegistrationError
     {
-        public string Code { get; set; }
-        public string Description { get; set; }
+        public string? Code { get; set; }
+        public string? Description { get; set; }
     }
 
 }
