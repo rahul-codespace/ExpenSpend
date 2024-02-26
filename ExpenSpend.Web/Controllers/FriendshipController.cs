@@ -6,6 +6,8 @@ using ExpenSpend.Domain.Models.Friends;
 using ExpenSpend.Domain.Models.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace ExpenSpend.Web.Controllers
 {
