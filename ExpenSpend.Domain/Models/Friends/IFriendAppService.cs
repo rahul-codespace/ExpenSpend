@@ -1,5 +1,5 @@
 ﻿using ExpenSpend.Core.DTOs.Friends;
-using ExpenSpend.Core.Helpers;
+using ExpenSpend.Domain.Helpers;
 
 namespace ExpenSpend.Domain.Models.Friends
 {

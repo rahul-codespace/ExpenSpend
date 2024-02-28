@@ -15,9 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ExpenSpend.Core\ExpenSpend.Core.csproj" />
-    <ProjectReference Include="..\ExpenSpend.Data\ExpenSpend.Data.csproj" />
     <ProjectReference Include="..\ExpenSpend.Domain\ExpenSpend.Domain.csproj" />
+    <ProjectReference Include="..\ExpenSpend.Repository\ExpenSpend.Repository.csproj" />
   </ItemGroup>
 
 </Project>

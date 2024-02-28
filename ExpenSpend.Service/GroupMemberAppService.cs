@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using ExpenSpend.Core.DTOs.GroupMembers;
-using ExpenSpend.Core.Helpers;
 using ExpenSpend.Data.Context;
 using ExpenSpend.Domain;
+using ExpenSpend.Domain.Helpers;
 using ExpenSpend.Domain.Models.GroupMembers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;

@@ -1,6 +1,5 @@
 ﻿using ExpenSpend.Core.DTOs.Groups;
-using ExpenSpend.Core.Helpers;
-using ExpenSpend.Domain.Models.GroupMembers;
+using ExpenSpend.Domain.Helpers;
 
 namespace ExpenSpend.Domain.Models.Groups
 {

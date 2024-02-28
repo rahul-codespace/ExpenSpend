@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using ExpenSpend.Core.DTOs.Users;
-using ExpenSpend.Core.Helpers;
 using ExpenSpend.Data.Context;
 using ExpenSpend.Domain;
+using ExpenSpend.Domain.Helpers;
 using ExpenSpend.Domain.Models.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;

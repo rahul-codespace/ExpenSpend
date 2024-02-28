@@ -9,6 +9,8 @@ using ExpenSpend.Domain.Models.Friends;
 using ExpenSpend.Domain.Models.GroupMembers;
 using ExpenSpend.Domain.Models.Groups;
 using ExpenSpend.Domain.Models.Users;
+using ExpenSpend.Repository.Contracts;
+using ExpenSpend.Repository.Implementations;
 using ExpenSpend.Service;
 using ExpenSpend.Service.Emails;
 using ExpenSpend.Service.Emails.Interfaces;

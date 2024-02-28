@@ -1,5 +1,5 @@
 ﻿using ExpenSpend.Core.DTOs.GroupMembers;
-using ExpenSpend.Core.Helpers;
+using ExpenSpend.Domain.Helpers;
 
 namespace ExpenSpend.Domain.Models.GroupMembers;
 

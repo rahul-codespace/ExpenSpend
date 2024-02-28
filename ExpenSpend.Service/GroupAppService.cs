@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using ExpenSpend.Core.DTOs.Groups;
-using ExpenSpend.Core.Helpers;
 using ExpenSpend.Data.Context;
 using ExpenSpend.Domain;
+using ExpenSpend.Domain.Helpers;
 using ExpenSpend.Domain.Models.GroupMembers;
 using ExpenSpend.Domain.Models.Groups;
+using ExpenSpend.Repository.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
@@ -51,14 +52,7 @@ public class GroupAppService : IGroupAppService
             CreatedAt = DateTime.Now,
         };
         var createdGroup = await _groupRepository.CreateAsync(group);
-        if (createdGroup == null)
-        {
-            return new ApiResponse<GetGroupDto>
-            {
-                Message = "Bad Request",
-                StatusCode = 400
-            };
-        }
+
         var groupMember = new GroupMember
         {
             GroupId = createdGroup.Id,

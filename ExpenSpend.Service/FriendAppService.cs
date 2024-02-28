@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using ExpenSpend.Core.DTOs.Friends;
 using ExpenSpend.Core.DTOs.Friends.Enums;
-using ExpenSpend.Core.Helpers;
 using ExpenSpend.Data.Context;
 using ExpenSpend.Domain;
+using ExpenSpend.Domain.Helpers;
 using ExpenSpend.Domain.Models.Friends;
+using ExpenSpend.Repository.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
