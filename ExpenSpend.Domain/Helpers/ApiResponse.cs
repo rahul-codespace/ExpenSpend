@@ -1,4 +1,4 @@
-﻿namespace ExpenSpend.Core.Helpers;
+﻿namespace ExpenSpend.Domain.Helpers;
 
 public class ApiResponse<T>
 {

@@ -40,7 +40,6 @@ namespace ExpenSpend.Web.Controllers
             }
             return BadRequest(friendshipRequests.Message);
         }
-
         [HttpPost("create")]
         public async Task<IActionResult> CreateAsync(CreateFriendshipDto friendshipDto)
         {
