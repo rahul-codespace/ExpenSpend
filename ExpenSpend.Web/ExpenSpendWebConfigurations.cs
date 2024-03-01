@@ -9,8 +9,6 @@ using ExpenSpend.Domain.Models.Friends;
 using ExpenSpend.Domain.Models.GroupMembers;
 using ExpenSpend.Domain.Models.Groups;
 using ExpenSpend.Domain.Models.Users;
-using ExpenSpend.Repository.Contracts;
-using ExpenSpend.Repository.Implementations;
 using ExpenSpend.Service;
 using ExpenSpend.Service.Emails;
 using ExpenSpend.Service.Emails.Interfaces;
@@ -19,7 +17,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -50,6 +48,22 @@ public static class ExpenSpendWebConfigurations
             .AddDefaultTokenProviders();
     }
 
+    public static void AddCorsPolicy(this IServiceCollection services)
+    {
+        services.AddCors(options =>
+        {
+            options.AddPolicy("CorsPolicy", builder =>
+            {
+                builder
+                .WithOrigins("http://localhost:4200", "https://localhost:4200", "https://expenspend.azurewebsites.net")
+                .SetIsOriginAllowedToAllowWildcardSubdomains()
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+            });
+        });
+    }
+
     public static void AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddAuthentication(options =>
@@ -70,7 +84,7 @@ public static class ExpenSpendWebConfigurations
                 ValidIssuer = configuration["JWT:ValidIssuer"],
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]!))
             };
-        });
+        }).AddMicrosoftIdentityWebApi(configuration.GetSection("AzureAd"), jwtBearerScheme: "AzureAd");
     }
 
     public static void AddEmailService(this IServiceCollection services, IConfiguration configuration)
@@ -89,7 +103,7 @@ public static class ExpenSpendWebConfigurations
         services.AddScoped<IGroupMemberAppService, GroupMemberAppService>();
         services.AddHttpContextAccessor();
     }
-    
+
     public static void AddSwaggerConfig(this IServiceCollection services)
     {
         services.AddEndpointsApiExplorer();

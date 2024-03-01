@@ -32,6 +32,9 @@ builder.Services.AddRepositories();
 // Setup Swagger for API docs.
 builder.Services.AddSwaggerConfig();
 
+// Setup CORS policy.
+builder.Services.AddCorsPolicy();
+
 var app = builder.Build();
 
 // Use Swagger in development mode.
@@ -51,5 +54,7 @@ app.MapControllers();
 
 // Seed Database
 ExpenSpendDbInitializer.Seed(app);
+
+app.UseCors("CorsPolicy");
 
 app.Run();
