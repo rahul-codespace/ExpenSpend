@@ -99,7 +99,6 @@ namespace ExpenSpend.Repository.Implementations
         {
             _dbSet.UpdateRange(entities);
             await SaveAsync();
-
         }
     }
 }

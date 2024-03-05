@@ -5,11 +5,13 @@ using ExpenSpend.Core.DTOs.Emails;
 using ExpenSpend.Data.Context;
 using ExpenSpend.Data.Repository;
 using ExpenSpend.Domain;
-using ExpenSpend.Domain.Models.Friends;
 using ExpenSpend.Domain.Models.GroupMembers;
 using ExpenSpend.Domain.Models.Groups;
 using ExpenSpend.Domain.Models.Users;
+using ExpenSpend.Repository.Contracts;
+using ExpenSpend.Repository.Implementations;
 using ExpenSpend.Service;
+using ExpenSpend.Service.Contracts;
 using ExpenSpend.Service.Emails;
 using ExpenSpend.Service.Emails.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -95,6 +97,7 @@ public static class ExpenSpendWebConfigurations
     public static void AddRepositories(this IServiceCollection services)
     {
         services.AddScoped(typeof(IExpenSpendRepository<>), typeof(ExpenSpendRepository<>));
+        services.AddScoped(typeof(IRepository<>), typeof(EntityFrameworkRepository<>));
         services.AddScoped<IAuthAppService, AuthAppService>();
         services.AddScoped<IUserAppService, UserAppService>();
         services.AddScoped<IEmailService, EmailService>();
