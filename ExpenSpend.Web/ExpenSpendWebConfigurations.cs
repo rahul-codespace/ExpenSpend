@@ -50,14 +50,14 @@ public static class ExpenSpendWebConfigurations
             .AddDefaultTokenProviders();
     }
 
-    public static void AddCorsPolicy(this IServiceCollection services)
+    public static void AddCorsPolicy(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddCors(options =>
         {
             options.AddPolicy("CorsPolicy", builder =>
             {
                 builder
-                .WithOrigins("http://localhost:4200", "https://localhost:4200", "https://expenspend.azurewebsites.net")
+                .WithOrigins(configuration["Cors:AllowedOrigins"]!.Split(","))
                 .SetIsOriginAllowedToAllowWildcardSubdomains()
                 .AllowAnyHeader()
                 .AllowAnyMethod()

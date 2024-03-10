@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ExpenSpend.Web.Controllers;
 
-[Route("api/account")]
+[Route("api/auth")]
 [ApiController]
 public class AuthController : ControllerBase
 {

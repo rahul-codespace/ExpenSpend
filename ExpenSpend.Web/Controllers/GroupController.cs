@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ExpenSpend.Web.Controllers
 {
     [ApiController]
-    [Route("api/group")]
+    [Route("api/groups")]
     [Authorize]
     public class GroupController : ControllerBase
     {
@@ -19,68 +19,73 @@ namespace ExpenSpend.Web.Controllers
             _groupAppService = groupAppService;
         }
 
-        [HttpGet("groups")]
+        [HttpGet]
         public async Task<IActionResult> GetAllGroups()
         {
             var groups = await _groupAppService.GetAllGroupsAsync();
             return Ok(groups);
         }
-        [HttpGet("group/{id}")]
+
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetGroupById(Guid id)
         {
             var group = await _groupAppService.GetGroupByIdAsync(id);
             if (group == null)
             {
-                return Ok(group);
+                return NotFound();
             }
-            return NotFound();
+            return Ok(group);
         }
-        [HttpGet("groups/{userId}")]
+
+        [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetGroupsByUserId(Guid userId)
         {
             var groups = await _groupAppService.GetGroupsByUserId(userId);
-            if(groups.StatusCode == 200)
+            if (groups.StatusCode == 200)
             {
                 return Ok(groups.Data);
             }
             return NotFound(groups.Message);
         }
-        [HttpPost("group")]
+
+        [HttpPost]
         public async Task<IActionResult> CreateGroup(CreateGroupDto input)
         {
             var result = await _groupAppService.CreateGroupAsync(input);
             if (result.StatusCode == 201)
             {
-                return Ok(result.Data);
+                return CreatedAtAction(nameof(GetGroupById), new { id = result.Data.Id }, result.Data);
             }
             return BadRequest(result.Message);
         }
-        [HttpPost("group-with-members")]
+
+        [HttpPost("with-members")]
         public async Task<IActionResult> CreateGroupWithMembers(CreateGroupWithMembersDto input)
         {
             var result = await _groupAppService.CreateGroupWithMembers(input);
             if (result.StatusCode == 201)
             {
-                return Ok(result.Data);
+                return CreatedAtAction(nameof(GetGroupById), new { id = result.Data.Id }, result.Data);
             }
             return BadRequest(result.Message);
         }
-        [HttpPut("group/{id}")]
+
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateGroup(Guid id, UpdateGroupDto input)
         {
-
-            var result = await _groupAppService.UpdateGroupAsync(id , input);
+            var result = await _groupAppService.UpdateGroupAsync(id, input);
             if (result.StatusCode == 200)
             {
                 return Ok(result.Data);
             }
             return StatusCode(result.StatusCode, result.Message);
         }
-        [HttpDelete("group/{id}")]
+
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGroup(Guid id)
         {
             var result = await _groupAppService.SoftDeleteAsync(id);
-            if(result.StatusCode == 200)
+            if (result.StatusCode == 200)
             {
                 return Ok(result.Data);
             }

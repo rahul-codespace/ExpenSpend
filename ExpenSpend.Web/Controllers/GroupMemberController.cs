@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ExpenSpend.Web.Controllers
 {
-    [Route("api/group-member")]
+    [Route("api/group-members")]
     [ApiController]
     [Authorize]
     public class GroupMemberController : ControllerBase
@@ -18,17 +18,19 @@ namespace ExpenSpend.Web.Controllers
         {
             _groupMemberService = groupMemberService;
         }
-        [HttpGet("group-members")]
+
+        [HttpGet]
         public async Task<IActionResult> GetAllGroupMembers()
         {
             var groupMembers = await _groupMemberService.GetAllGroupMembersAsync();
-            if(groupMembers.StatusCode == 200)
+            if (groupMembers.StatusCode == 200)
             {
                 return Ok(groupMembers.Data);
             }
             return NotFound(groupMembers.Message);
         }
-        [HttpGet("group-member/{id}")]
+
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetGroupMemberById(Guid id)
         {
             var groupMember = await _groupMemberService.GetGroupMemberByIdAsync(id);
@@ -39,7 +41,7 @@ namespace ExpenSpend.Web.Controllers
             return NotFound(groupMember.Message);
         }
 
-        [HttpPost("group-member")]
+        [HttpPost]
         public async Task<IActionResult> CreateGroupMember(CreateGroupMemberDto input)
         {
             var result = await _groupMemberService.CreateGroupMemberAsync(input);
@@ -50,17 +52,18 @@ namespace ExpenSpend.Web.Controllers
             return StatusCode(result.StatusCode, result.Message);
         }
 
-        [HttpPut("make-group-admin/{id}")]
+        [HttpPut("make-admin/{id}")]
         public async Task<IActionResult> MakeGroupAdmin(Guid id)
         {
-           var result = await _groupMemberService.MakeGroupAdminAsync(id);
-            if(result.StatusCode == 200)
+            var result = await _groupMemberService.MakeGroupAdminAsync(id);
+            if (result.StatusCode == 200)
             {
                 return Ok(result.Data);
             }
             return StatusCode(result.StatusCode, result.Message);
         }
-        [HttpPut("remove-group-admin/{id}")]
+
+        [HttpPut("remove-admin/{id}")]
         public async Task<IActionResult> RemoveGroupAdmin(Guid id)
         {
             var result = await _groupMemberService.RemoveGroupAdminAsync(id);
@@ -71,7 +74,7 @@ namespace ExpenSpend.Web.Controllers
             return StatusCode(result.StatusCode, result.Message);
         }
 
-        [HttpDelete("remove-group-member/{id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGroupMember(Guid id)
         {
             var result = await _groupMemberService.DeleteGroupMemberAsync(id);
