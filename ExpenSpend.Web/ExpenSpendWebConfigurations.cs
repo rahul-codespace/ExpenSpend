@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Text.Json.Serialization;
-using ExpenSpend.Core.DTOs.Emails;
+using ExpenSpend.Domain.DTOs.Emails;
 using ExpenSpend.Data.Context;
 using ExpenSpend.Data.Repository;
 using ExpenSpend.Domain;

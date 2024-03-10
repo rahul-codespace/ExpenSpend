@@ -1,4 +1,4 @@
-﻿using ExpenSpend.Core.DTOs.GroupMembers;
+﻿using ExpenSpend.Domain.DTOs.GroupMembers;
 using ExpenSpend.Domain.Models.GroupMembers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

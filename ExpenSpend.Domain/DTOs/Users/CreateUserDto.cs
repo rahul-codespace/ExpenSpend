@@ -1,7 +1,7 @@
-﻿using ExpenSpend.Core.Users.Const;
+﻿using ExpenSpend.Domain.Users.Const;
 using System.ComponentModel.DataAnnotations;
 
-namespace ExpenSpend.Core.DTOs.Users;
+namespace ExpenSpend.Domain.DTOs.Users;
 
 public class CreateUserDto
 {

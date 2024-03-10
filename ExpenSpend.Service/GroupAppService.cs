@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ExpenSpend.Core.DTOs.Groups;
+using ExpenSpend.Domain.DTOs.Groups;
 using ExpenSpend.Data.Context;
 using ExpenSpend.Domain;
 using ExpenSpend.Domain.Helpers;
@@ -56,7 +56,7 @@ public class GroupAppService : IGroupAppService
         var groupMember = new GroupMember
         {
             GroupId = createdGroup.Id,
-            UserId = currUser.Id,
+            UserId = currUser!.Id,
             IsAdmin = true,
             CreatedAt = DateTime.Now,
             CreatedBy = currUser.Id
@@ -125,7 +125,7 @@ public class GroupAppService : IGroupAppService
         existingGroup.Name = group.Name;
         existingGroup.About = group.About;
         existingGroup.ModifiedAt = DateTime.Now;
-        existingGroup.ModifiedBy = currUser.Id;
+        existingGroup.ModifiedBy = currUser!.Id;
 
         var result = await _groupRepository.UpdateAsync(existingGroup);
         if (result == null)
@@ -194,7 +194,7 @@ public class GroupAppService : IGroupAppService
 
     public async Task<ApiResponse<List<GetGroupDto>>> GetGroupsByUserId(Guid userId)
     {
-        var groups = await _context.Groups.Where(x => x.Members.Any(x => x.UserId == userId)).ToListAsync();
+        var groups = await _context.Groups.Where(x => x.Members!.Any(x => x.UserId == userId)).ToListAsync();
         if (groups == null)
         {
             return new ApiResponse<List<GetGroupDto>>

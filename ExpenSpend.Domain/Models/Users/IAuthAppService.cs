@@ -1,5 +1,5 @@
-﻿using ExpenSpend.Core.DTOs.Accounts;
-using ExpenSpend.Core.DTOs.Users;
+﻿using ExpenSpend.Domain.DTOs.Users;
+using ExpenSpend.Domain.DTOs.Accounts;
 using Microsoft.AspNetCore.Identity;
 using System.IdentityModel.Tokens.Jwt;
 

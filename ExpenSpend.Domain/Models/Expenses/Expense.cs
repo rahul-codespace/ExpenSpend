@@ -7,7 +7,7 @@ namespace ExpenSpend.Domain.Models.Expenses;
 public class Expense : BaseEntity
 {
     public required string Title { get; set; }
-    public string Description { get; set; }
+    public string? Description { get; set; }
     public Guid GroupId { get; set; }
     public Group? Group { get; set; }
     public Guid PaidById { get; set; }

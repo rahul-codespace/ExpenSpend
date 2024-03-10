@@ -3,8 +3,8 @@ using System.Security.Claims;
 using System.Security.Policy;
 using System.Text;
 using AutoMapper;
-using ExpenSpend.Core.DTOs.Accounts;
-using ExpenSpend.Core.DTOs.Users;
+using ExpenSpend.Domain.DTOs.Accounts;
+using ExpenSpend.Domain.DTOs.Users;
 using ExpenSpend.Domain.Models.Users;
 using ExpenSpend.Service.Emails.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -16,7 +16,7 @@ namespace ExpenSpend.Service
 {
     public class AuthAppService : IAuthAppService
     {
-        private readonly UserManager<ESUser?> _userManager;
+        private readonly UserManager<ESUser> _userManager;
         private readonly SignInManager<ESUser> _signInManager;
         private readonly IConfiguration _configuration;
         private readonly IEmailService _emailService;
@@ -27,7 +27,7 @@ namespace ExpenSpend.Service
             IHttpContextAccessor contextAccessor,
             IMapper mapper,
             IEmailService emailService,
-            UserManager<ESUser?> userManager,
+            UserManager<ESUser> userManager,
             SignInManager<ESUser> signInManager,
             IConfiguration configuration
         ){

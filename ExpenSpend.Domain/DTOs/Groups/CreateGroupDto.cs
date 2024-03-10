@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ExpenSpend.Core.DTOs.Groups;
+namespace ExpenSpend.Domain.DTOs.Groups;
 public class CreateGroupDto
 {
-    [Required]
-    public string Name { get; set; }
+    public required string Name { get; set; }
     public string? About { get; set; }
 }

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ExpenSpend.Core.DTOs.GroupMembers;
+using ExpenSpend.Domain.DTOs.GroupMembers;
 using ExpenSpend.Data.Context;
 using ExpenSpend.Domain;
 using ExpenSpend.Domain.Helpers;
@@ -104,7 +104,7 @@ namespace ExpenSpend.Service
             foreach (var member in groupMembers)
             {
                 member.CreatedAt = DateTime.Now;
-                member.CreatedBy = currUser.Id;
+                member.CreatedBy = currUser?.Id;
             }
 
             await _context.GroupMembers.AddRangeAsync(groupMembers);

@@ -1,4 +1,4 @@
-﻿using ExpenSpend.Core.DTOs.Friends;
+﻿using ExpenSpend.Domain.DTOs.Friends;
 using ExpenSpend.Service.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

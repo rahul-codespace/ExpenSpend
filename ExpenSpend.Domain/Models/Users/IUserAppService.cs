@@ -1,4 +1,4 @@
-﻿using ExpenSpend.Core.DTOs.Users;
+﻿using ExpenSpend.Domain.DTOs.Users;
 using ExpenSpend.Domain.Helpers;
 
 namespace ExpenSpend.Domain.Models.Users;

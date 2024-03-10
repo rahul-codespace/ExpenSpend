@@ -12,7 +12,9 @@ namespace ExpenSpend.Data.Context;
 
 public class ExpenSpendDbContext : IdentityDbContext<ESUser, IdentityRole<Guid>, Guid>
 {
+#pragma warning disable CS0114 // Member hides inherited member; missing override keyword
     public DbSet<ESUser> Users { get; set; }
+#pragma warning restore CS0114 // Member hides inherited member; missing override keyword
     public DbSet<Friendship> Friendships { get; set; }
     public DbSet<Group> Groups { get; set; }
     public DbSet<GroupMember> GroupMembers { get; set; }

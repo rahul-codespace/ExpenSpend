@@ -1,4 +1,4 @@
-﻿namespace ExpenSpend.Core.DTOs.Friends.Enums;
+﻿namespace ExpenSpend.Domain.DTOs.Friends.Enums;
 
 public enum FriendshipStatus
 {

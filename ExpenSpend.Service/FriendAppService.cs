@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ExpenSpend.Core.DTOs.Friends.Enums;
+using ExpenSpend.Domain.DTOs.Friends.Enums;
 using ExpenSpend.Data.Context;
 using ExpenSpend.Domain;
 using ExpenSpend.Domain.Models.Friends;
@@ -39,7 +39,7 @@ namespace ExpenSpend.Service
             var currentUser = _httpContext.HttpContext?.User?.Identity?.Name;
             var currUser = await _context.Users.FirstOrDefaultAsync(u => u.UserName == currentUser);
             var friendRequests = await _context.Friendships
-            .Where(f => f.RecipientId == currUser.Id && f.Status == FriendshipStatus.Pending)
+            .Where(f => f.RecipientId == currUser!.Id && f.Status == FriendshipStatus.Pending)
             .Include(f => f.Initiator)
             .Include(f => f.Recipient)
             .ToListAsync();
@@ -54,7 +54,7 @@ namespace ExpenSpend.Service
             var currentUser = _httpContext.HttpContext?.User?.Identity?.Name;
             var currUser = await _context.Users.FirstOrDefaultAsync(u => u.UserName == currentUser);
             var friends = await _context.Friendships
-            .Where(f => (f.InitiatorId == currUser.Id || f.RecipientId == currUser.Id) && f.Status == FriendshipStatus.Accepted)
+            .Where(f => (f.InitiatorId == currUser!.Id || f.RecipientId == currUser.Id) && f.Status == FriendshipStatus.Accepted)
             .Include(f => f.Initiator)
             .Include(f => f.Recipient)
             .ToListAsync();
@@ -81,7 +81,7 @@ namespace ExpenSpend.Service
             var currUser = await _context.Users.FirstOrDefaultAsync(u => u.UserName == currentUser);
             var friend = new Friendship
             {
-                InitiatorId = currUser.Id,
+                InitiatorId = currUser!.Id,
                 RecipientId = recipientId,
                 Status = FriendshipStatus.Pending,
                 CreatedAt = DateTime.Now,

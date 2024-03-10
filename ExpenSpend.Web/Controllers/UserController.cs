@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
-using ExpenSpend.Core.DTOs.Users;
+using ExpenSpend.Domain.DTOs.Users;
 using ExpenSpend.Domain.Models.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

@@ -92,7 +92,9 @@ namespace ExpenSpend.Repository.Implementations
 
         public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
         {
+#pragma warning disable CS8603 // Possible null reference return.
             return await _dbSet.FirstOrDefaultAsync(predicate);
+#pragma warning restore CS8603 // Possible null reference return.
         }
 
         public async Task UpdateRangeAsync(IEnumerable<T> entities)

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ExpenSpend.Core.DTOs.Accounts;
+namespace ExpenSpend.Domain.DTOs.Accounts;
 
 public class ResetPasswordDto
 {

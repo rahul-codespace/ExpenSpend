@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ExpenSpend.Core.DTOs.Users;
+using ExpenSpend.Domain.DTOs.Users;
 using ExpenSpend.Data.Context;
 using ExpenSpend.Domain;
 using ExpenSpend.Domain.Helpers;
@@ -28,10 +28,11 @@ public class UserAppService : IUserAppService
 
     public async Task<GetUserDto> GetLoggedInUser()
     {
-        var result = await _userManager.FindByNameAsync(_httpContext.HttpContext?.User?.Identity?.Name);
-        if (result != null)
+        var loggedInUserId = _httpContext.HttpContext.User.Identity?.Name;
+        if (loggedInUserId != null)
         {
-            return _mapper.Map<GetUserDto>(result);
+            var user = await _userManager.FindByIdAsync(loggedInUserId);
+            return _mapper.Map<GetUserDto>(user);
         }
         return null;
     }
@@ -41,11 +42,15 @@ public class UserAppService : IUserAppService
     }
     public async Task<ESUser> GetUserByIdAsync(string id)
     {
+        #pragma warning disable CS8603 // Possible null reference return.
         return await _userManager.FindByIdAsync(id);
+        #pragma warning restore CS8603 // Possible null reference return.
     }
     public async Task<ESUser> GetUserByUserNameAsync(string userName)
     {
+        #pragma warning disable CS8603 // Possible null reference return.
         return await _userManager.FindByNameAsync(userName);
+        #pragma warning restore CS8603 // Possible null reference return.
     }
     public async Task<ApiResponse<GetUserDto>> UpdateUserAsync(Guid id, UpdateUserDto user)
     {

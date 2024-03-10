@@ -1,4 +1,4 @@
-﻿using ExpenSpend.Core.DTOs.GroupMembers;
+﻿using ExpenSpend.Domain.DTOs.GroupMembers;
 using ExpenSpend.Domain.Helpers;
 
 namespace ExpenSpend.Domain.Models.GroupMembers;

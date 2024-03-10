@@ -1,4 +1,4 @@
-﻿using ExpenSpend.Core.DTOs.Emails;
+﻿using ExpenSpend.Domain.DTOs.Emails;
 
 namespace ExpenSpend.Service.Emails.Interfaces;
 

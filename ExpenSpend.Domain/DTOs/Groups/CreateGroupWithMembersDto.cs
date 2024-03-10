@@ -1,4 +1,4 @@
-﻿namespace ExpenSpend.Core.DTOs.Groups;
+﻿namespace ExpenSpend.Domain.DTOs.Groups;
 
 public class CreateGroupWithMembersDto
 {

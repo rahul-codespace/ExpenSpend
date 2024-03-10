@@ -20,7 +20,9 @@ public class ExpenSpendRepository<TEntity> : IExpenSpendRepository<TEntity> wher
 
     public async Task<TEntity> GetByIdAsync(Guid id)
     {
+#pragma warning disable CS8603 // Possible null reference return.
         return await _context.Set<TEntity>().FindAsync(id);
+#pragma warning restore CS8603 // Possible null reference return.
     }
 
     public async Task<TEntity> CreateAsync(TEntity entity)
