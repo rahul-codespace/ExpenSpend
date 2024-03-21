@@ -39,6 +39,8 @@ public class ExpenSpendDbContext : IdentityDbContext<ESUser, IdentityRole<Guid>,
              .OnDelete(DeleteBehavior.Cascade)
              .IsRequired().HasPrincipalKey(u => u.Id);
 
+            b.HasQueryFilter(x => x.IsDeleted == false);
+
             b.HasOne(f => f.Recipient)
              .WithMany()
              .HasForeignKey(f => f.RecipientId)
@@ -65,6 +67,8 @@ public class ExpenSpendDbContext : IdentityDbContext<ESUser, IdentityRole<Guid>,
                 .HasForeignKey(e => e.GroupId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired().HasPrincipalKey(g => g.Id);
+
+            b.HasQueryFilter(x => x.IsDeleted == false); // Apply soft delete filter
         });
 
         builder.Entity<GroupMember>(b =>
@@ -74,6 +78,8 @@ public class ExpenSpendDbContext : IdentityDbContext<ESUser, IdentityRole<Guid>,
              .HasForeignKey(m => m.UserId)
              .OnDelete(DeleteBehavior.Cascade)
              .IsRequired().HasPrincipalKey(u => u.Id);
+
+            b.HasQueryFilter(x => x.IsDeleted == false); // Apply soft delete filter
         });
 
         builder.Entity<Expense>(b =>
@@ -83,6 +89,8 @@ public class ExpenSpendDbContext : IdentityDbContext<ESUser, IdentityRole<Guid>,
              .HasForeignKey(p => p.ExpenseId)
              .OnDelete(DeleteBehavior.Cascade)
              .IsRequired().HasPrincipalKey(e => e.Id);
+
+            b.HasQueryFilter(x => x.IsDeleted == false); // Apply soft delete filter
         });
 
         builder.Entity<Payment>(b =>
@@ -92,7 +100,8 @@ public class ExpenSpendDbContext : IdentityDbContext<ESUser, IdentityRole<Guid>,
              .HasForeignKey(p => p.OwenedById)
              .OnDelete(DeleteBehavior.Cascade)
              .IsRequired().HasPrincipalKey(u => u.Id);
-        });
 
+            b.HasQueryFilter(x => x.IsDeleted == false); // Apply soft delete filter
+        });
     }
 }

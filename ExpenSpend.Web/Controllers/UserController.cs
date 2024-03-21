@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using ExpenSpend.Domain.DTOs.Users;
 using ExpenSpend.Domain.Models.Users;
+using ExpenSpend.Service.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -58,22 +59,19 @@ namespace ExpenSpend.Web.Controllers
         public async Task<IActionResult> UpdateUser(Guid id, UpdateUserDto input)
         {
             var result = await _userService.UpdateUserAsync(id, input);
-            if (result.StatusCode == 201)
+            if (result.IsSuccess)
             {
                 return Ok(result.Data);
             }
-            return StatusCode(result.StatusCode, result.Message);
+            return BadRequest(result);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(Guid id)
         {
             var result = await _userService.DeleteUserAsync(id);
-            if (result.StatusCode == 204)
-            {
-                return Ok(result.Message);
-            }
-            return StatusCode(result.StatusCode, result.Message);
+            return Ok(result);
+
         }
     }
 }

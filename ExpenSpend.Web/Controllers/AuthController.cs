@@ -8,6 +8,7 @@ using ExpenSpend.Domain.Models.Users;
 using ExpenSpend.Service.Emails.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ExpenSpend.Service.Contracts;
 
 namespace ExpenSpend.Web.Controllers;
 

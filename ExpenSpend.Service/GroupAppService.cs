@@ -1,24 +1,24 @@
 ﻿using AutoMapper;
 using ExpenSpend.Domain.DTOs.Groups;
 using ExpenSpend.Data.Context;
-using ExpenSpend.Domain;
-using ExpenSpend.Domain.Helpers;
 using ExpenSpend.Domain.Models.GroupMembers;
 using ExpenSpend.Domain.Models.Groups;
 using ExpenSpend.Repository.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using ExpenSpend.Service.Models;
+using ExpenSpend.Service.Contracts;
 
 namespace ExpenSpend.Service;
 
 public class GroupAppService : IGroupAppService
 {
-    private readonly IExpenSpendRepository<Group> _groupRepository;
+    private readonly IRepository<Group> _groupRepository;
     private readonly ExpenSpendDbContext _context;
     private readonly IMapper _mapper;
     private readonly IHttpContextAccessor _httpContext;
 
-    public GroupAppService(IExpenSpendRepository<Group> groupRepository, ExpenSpendDbContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+    public GroupAppService(IRepository<Group> groupRepository, ExpenSpendDbContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor)
     {
         _groupRepository = groupRepository;
         _context = context;
@@ -26,21 +26,21 @@ public class GroupAppService : IGroupAppService
         _httpContext = httpContextAccessor;
     }
 
-    public async Task<List<GetGroupDto>> GetAllGroupsAsync()
+    public async Task<Response> GetAllGroupsAsync()
     {
-        return _mapper.Map<List<GetGroupDto>>(await _groupRepository.GetAllAsync());
+        var groups = await _groupRepository.GetAllAsync();
+        return new Response(_mapper.Map<List<GetGroupDto>>(groups));
     }
-    public async Task<GetGroupDto?> GetGroupByIdAsync(Guid id)
+    public async Task<Response> GetGroupByIdAsync(Guid id)
     {
-        var result =  _mapper.Map<GetGroupDto>(await _groupRepository.GetByIdAsync(id));
-        if (result != null)
+        var group = await _context.Groups.Include(g => g.Members).FirstOrDefaultAsync(g => g.Id == id);
+        if (group != null)
         {
-            return result;
+            return new Response(_mapper.Map<GetGroupDto>(group));
         }
-
         return null;
     }
-    public async Task<ApiResponse<GetGroupDto>> CreateGroupAsync(CreateGroupDto input)
+    public async Task<Response> CreateGroupAsync(CreateGroupDto input)
     {
         var currentUser = _httpContext.HttpContext?.User?.Identity?.Name;
         var currUser = await _context.Users.FirstOrDefaultAsync(u => u.UserName == currentUser);
@@ -51,26 +51,33 @@ public class GroupAppService : IGroupAppService
             CreatedBy = currUser?.Id,
             CreatedAt = DateTime.Now,
         };
-        var createdGroup = await _groupRepository.CreateAsync(group);
 
-        var groupMember = new GroupMember
+        using (var transaction = _context.Database.BeginTransaction())
         {
-            GroupId = createdGroup.Id,
-            UserId = currUser!.Id,
-            IsAdmin = true,
-            CreatedAt = DateTime.Now,
-            CreatedBy = currUser.Id
-        };
-        _context.GroupMembers.Add(groupMember);
-        await _context.SaveChangesAsync();
-        return new ApiResponse<GetGroupDto>
-        {
-            Data = _mapper.Map<GetGroupDto>(createdGroup),
-            Message = "Group created successfully",
-            StatusCode = 201
-        };
+            try
+            {
+                await _groupRepository.InsertAsync(group);
+                var groupMember = new GroupMember
+                {
+                    GroupId = group.Id,
+                    UserId = currUser!.Id,
+                    IsAdmin = true,
+                    CreatedAt = DateTime.Now,
+                    CreatedBy = currUser.Id
+                };
+                _context.GroupMembers.Add(groupMember);
+                await _context.SaveChangesAsync();
+                transaction.Commit();
+                return new Response(_mapper.Map<GetGroupDto>(group));
+            }
+            catch (Exception)
+            {
+                transaction.Rollback();
+                throw;
+            }
+        }
     }
-    public async Task<ApiResponse<GetGroupDto>> CreateGroupWithMembers(CreateGroupWithMembersDto input)
+    public async Task<Response> CreateGroupWithMembers(CreateGroupWithMembersDto input)
     {
         var currentUser = _httpContext.HttpContext?.User?.Identity?.Name;
         var currUser = await _context.Users.FirstOrDefaultAsync(u => u.UserName == currentUser);
@@ -81,43 +88,37 @@ public class GroupAppService : IGroupAppService
             CreatedBy = currUser?.Id,
             CreatedAt = DateTime.Now,
         };
-        var createdGroup = await _groupRepository.CreateAsync(group);
-        if (createdGroup == null)
+        using (var transaction = _context.Database.BeginTransaction())
         {
-            return new ApiResponse<GetGroupDto>
+            try
             {
-                Message = "Bad Request",
-                StatusCode = 400
-            };
-        }
-        var groupMembers = new List<GroupMember>();
-        foreach (var memberId in input.MemberIds)
-        {
-            groupMembers.Add(new GroupMember
+                await _groupRepository.InsertAsync(group);
+                var groupMembers = new List<GroupMember>();
+                foreach (var memberId in input.MemberIds)
+                {
+                    groupMembers.Add(new GroupMember
+                    {
+                        GroupId = group.Id,
+                        UserId = memberId
+                    });
+                }
+                _context.GroupMembers.AddRange(groupMembers);
+                await _context.SaveChangesAsync();
+                return new Response(_mapper.Map<GetGroupDto>(group));
+            }
+            catch (Exception)
             {
-                GroupId = createdGroup.Id,
-                UserId = memberId
-            });
+                transaction.Rollback();
+                throw;
+            }
         }
-        _context.GroupMembers.AddRange(groupMembers);
-        await _context.SaveChangesAsync();
-        return new ApiResponse<GetGroupDto>
-        {
-            Data = _mapper.Map<GetGroupDto>(createdGroup),
-            Message = "Group created successfully",
-            StatusCode = 201
-        };
     }
-    public async Task<ApiResponse<GetGroupDto>> UpdateGroupAsync(Guid id, UpdateGroupDto group)
+    public async Task<Response> UpdateGroupAsync(Guid id, UpdateGroupDto group)
     {
         var existingGroup = await _groupRepository.GetByIdAsync(id);
         if (existingGroup == null)
         {
-            return new ApiResponse<GetGroupDto>
-            {
-                Message = "Group not found",
-                StatusCode = 404
-            };
+            return new Response("Group not found");
         }
 
         var currentUser = _httpContext.HttpContext?.User?.Identity?.Name;
@@ -127,87 +128,49 @@ public class GroupAppService : IGroupAppService
         existingGroup.ModifiedAt = DateTime.Now;
         existingGroup.ModifiedBy = currUser!.Id;
 
-        var result = await _groupRepository.UpdateAsync(existingGroup);
-        if (result == null)
+        using (var transaction = _context.Database.BeginTransaction())
         {
-            return new ApiResponse<GetGroupDto>
+            try
             {
-                Message = "Bad Request",
-                StatusCode = 400
-            };
+                await _groupRepository.UpdateAsync(existingGroup);
+                transaction.Commit();
+            }
+            catch (Exception)
+            {
+                transaction.Rollback();
+                return new Response("An error occurred while updating the group");
+            }
         }
-        return new ApiResponse<GetGroupDto>
-        {
-            Data = _mapper.Map<GetGroupDto>(result),
-            Message = "Group updated successfully",
-            StatusCode = 200
-        };
+        return new Response(_mapper.Map<GetGroupDto>(existingGroup));
     }
-    public async Task<ApiResponse<GetGroupDto>> SoftDeleteAsync(Guid id)
+    public async Task<Response> SoftDeleteAsync(Guid id)
     {
         var existingGroup = await _groupRepository.GetByIdAsync(id);
         if (existingGroup == null)
         {
-            return new ApiResponse<GetGroupDto>
-            {
-                Message = "Group not found",
-                StatusCode = 404
-            };
+            new Response("Group not found");
         }
-        existingGroup.IsDeleted= true;
-        var result = await _groupRepository.UpdateAsync(existingGroup);
-        if (result == null)
-        {
-            return new ApiResponse<GetGroupDto>
-            {
-                Message = "Bad Request",
-                StatusCode = 400
-            };
-        }
-        return new ApiResponse<GetGroupDto>
-        {
-            Data = _mapper.Map<GetGroupDto>(result),
-            Message = "Group updated successfully",
-            StatusCode = 200
-        };
+        existingGroup!.IsDeleted= true;
+        await _groupRepository.UpdateAsync(existingGroup);
+        return new Response(_mapper.Map<GetGroupDto>(existingGroup));
     }
-    public async Task<ApiResponse<bool>> DeleteGroupAsync(Guid id)
+    public async Task<Response> DeleteGroupAsync(Guid id)
     {
-        var result = await _groupRepository.DeleteAsync(id);
-        if (!result)
+        var group = await _groupRepository.GetByIdAsync(id);
+        if (group == null)
         {
-            return new ApiResponse<bool>
-            {
-                Data = false,
-                Message = "Bad Request or Group not found!",
-                StatusCode = 400
-            };
+            return new Response("Group not found");
         }
-        return new ApiResponse<bool>
-        {
-            Data = true,
-            Message = "Group deleted successfully",
-            StatusCode = 200
-        };
+        await _groupRepository.DeleteAsync(group);
+        return new Response(_mapper.Map<GetGroupDto>(group));
     }
-
-
-    public async Task<ApiResponse<List<GetGroupDto>>> GetGroupsByUserId(Guid userId)
+    public async Task<Response> GetGroupsByUserId(Guid userId)
     {
         var groups = await _context.Groups.Where(x => x.Members!.Any(x => x.UserId == userId)).ToListAsync();
-        if (groups == null)
+        if (groups.Count == 0)
         {
-            return new ApiResponse<List<GetGroupDto>>
-            {
-                Message = "Groups not found",
-                StatusCode = 404
-            };
-        }   
-        return new ApiResponse<List<GetGroupDto>>
-        {
-            Data = _mapper.Map<List<GetGroupDto>>(groups),
-            Message = "Groups found successfully",
-            StatusCode = 200
-        };
+           return new Response("Groups not found");
+        }
+        return new Response(_mapper.Map<List<GetGroupDto>>(groups));
     }
 }

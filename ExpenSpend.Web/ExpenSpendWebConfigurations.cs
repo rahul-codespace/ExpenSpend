@@ -3,10 +3,6 @@ using System.Text;
 using System.Text.Json.Serialization;
 using ExpenSpend.Domain.DTOs.Emails;
 using ExpenSpend.Data.Context;
-using ExpenSpend.Data.Repository;
-using ExpenSpend.Domain;
-using ExpenSpend.Domain.Models.GroupMembers;
-using ExpenSpend.Domain.Models.Groups;
 using ExpenSpend.Domain.Models.Users;
 using ExpenSpend.Repository.Contracts;
 using ExpenSpend.Repository.Implementations;
@@ -96,7 +92,6 @@ public static class ExpenSpendWebConfigurations
 
     public static void AddRepositories(this IServiceCollection services)
     {
-        services.AddScoped(typeof(IExpenSpendRepository<>), typeof(ExpenSpendRepository<>));
         services.AddScoped(typeof(IRepository<>), typeof(EntityFrameworkRepository<>));
         services.AddScoped<IAuthAppService, AuthAppService>();
         services.AddScoped<IUserAppService, UserAppService>();

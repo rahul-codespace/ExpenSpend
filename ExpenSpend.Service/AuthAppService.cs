@@ -1,11 +1,11 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Policy;
 using System.Text;
 using AutoMapper;
 using ExpenSpend.Domain.DTOs.Accounts;
 using ExpenSpend.Domain.DTOs.Users;
 using ExpenSpend.Domain.Models.Users;
+using ExpenSpend.Service.Contracts;
 using ExpenSpend.Service.Emails.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -30,7 +30,8 @@ namespace ExpenSpend.Service
             UserManager<ESUser> userManager,
             SignInManager<ESUser> signInManager,
             IConfiguration configuration
-        ){
+        )
+        {
             _contextAccessor = contextAccessor;
             _mapper = mapper;
             _emailService = emailService;
@@ -59,7 +60,7 @@ namespace ExpenSpend.Service
             {
                 return UserRegistrationResult.Failure<List<IdentityError>>(registrationResult.Errors.ToList());
             }
-            
+
         }
 
         public async Task<IdentityResult> RegisterUserAsync(ESUser? user, string password)
