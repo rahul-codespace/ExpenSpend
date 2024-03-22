@@ -1,4 +1,4 @@
-﻿namespace ExpenSpend.Core.Users.Const;
+﻿namespace ExpenSpend.Domain.Users.Const;
 
 public class UserConsts
 {

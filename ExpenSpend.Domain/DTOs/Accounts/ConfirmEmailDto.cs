@@ -1,4 +1,4 @@
-﻿namespace ExpenSpend.Core.DTOs.Accounts;
+﻿namespace ExpenSpend.Domain.DTOs.Accounts;
 
 public class ConfirmEmailDto
 {

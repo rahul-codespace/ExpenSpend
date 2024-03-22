@@ -1,4 +1,4 @@
-﻿using ExpenSpend.Core.DTOs.Friends.Enums;
+﻿using ExpenSpend.Domain.DTOs.Friends.Enums;
 using ExpenSpend.Domain.Models.Expenses;
 using ExpenSpend.Domain.Models.Friends;
 using ExpenSpend.Domain.Models.GroupMembers;
@@ -19,7 +19,7 @@ namespace ExpenSpend.Data.Context
             {
                 var context = serviceScope.ServiceProvider.GetService<ExpenSpendDbContext>();
 
-                context.Database.EnsureCreated();
+                context!.Database.EnsureCreated();
 
 
                 // Seed Roles
@@ -108,10 +108,10 @@ namespace ExpenSpend.Data.Context
                     var userRole = await context.Roles.FirstOrDefaultAsync(x => x.Name == "User");
 
                     context.UserRoles.AddRange(new List<IdentityUserRole<Guid>>{
-                        new IdentityUserRole<Guid>{ RoleId = adminRole.Id, UserId = adminUser.Id},
-                        new IdentityUserRole<Guid>{ RoleId = userRole.Id, UserId = userUser.Id},
-                        new IdentityUserRole<Guid>{ RoleId = userRole.Id, UserId = rahulUser.Id},
-                        new IdentityUserRole<Guid>{ RoleId = userRole.Id, UserId = adityaUser.Id}
+                        new IdentityUserRole<Guid>{ RoleId = adminRole!.Id, UserId = adminUser!.Id},
+                        new IdentityUserRole<Guid>{ RoleId = userRole!.Id, UserId = userUser!.Id},
+                        new IdentityUserRole<Guid>{ RoleId = userRole.Id, UserId = rahulUser!.Id},
+                        new IdentityUserRole<Guid>{ RoleId = userRole.Id, UserId = adityaUser!.Id}
                     });
                     await context.SaveChangesAsync();
                 }
@@ -125,7 +125,7 @@ namespace ExpenSpend.Data.Context
                         {
                             Name = "Group 1",
                             About = "Group 1 Description",
-                            CreatedBy = adminUser.Id,
+                            CreatedBy = adminUser!.Id,
                             CreatedAt = DateTime.Now
                         },
                         new Group()
@@ -167,35 +167,35 @@ namespace ExpenSpend.Data.Context
                     {
                         new GroupMember()
                         {
-                            GroupId = group1.Id,
-                            UserId = adminUser.Id,
+                            GroupId = group1!.Id,
+                            UserId = adminUser!.Id,
                             CreatedBy = adminUser.Id,
                             CreatedAt = DateTime.Now,
                         },
                         new GroupMember()
                         {
                             GroupId = group1.Id,
-                            UserId = userUser.Id,
+                            UserId = userUser!.Id,
                             CreatedBy = adminUser.Id,
                             CreatedAt = DateTime.Now
                         },
                         new GroupMember()
                         {
                             GroupId = group1.Id,
-                            UserId = rahulUser.Id,
+                            UserId = rahulUser!.Id,
                             CreatedBy = adminUser.Id,
                             CreatedAt = DateTime.Now
                         },
                         new GroupMember()
                         {
                             GroupId = group1.Id,
-                            UserId = adityaUser.Id,
+                            UserId = adityaUser!.Id,
                             CreatedBy = adminUser.Id,
                             CreatedAt = DateTime.Now
                         },
                         new GroupMember()
                         {
-                            GroupId = group2.Id,
+                            GroupId = group2!.Id,
                             UserId = adminUser.Id,
                             CreatedBy = adminUser.Id,
                             CreatedAt = DateTime.Now
@@ -232,8 +232,8 @@ namespace ExpenSpend.Data.Context
                     {
                         new Expense()
                         {
-                            GroupId = group1.Id,
-                            CreatedBy = adminUser.Id,
+                            GroupId = group1!.Id,
+                            CreatedBy = adminUser!.Id,
                             CreatedAt = DateTime.Now,
                             Amount = 100,
                             Title = "Expense 1",
@@ -250,7 +250,7 @@ namespace ExpenSpend.Data.Context
                             Amount = 200,
                             Title = "Expense 2",
                             Description = "Expense 2 Description",
-                            PaidById = userUser.Id,
+                            PaidById = userUser!.Id,
                             SplitAs = SplitAs.Equally,
                             IsSettled = false
                         },
@@ -262,7 +262,7 @@ namespace ExpenSpend.Data.Context
                             Amount = 300,
                             Title = "Expense 3",
                             Description = "Expense 3 Description",
-                            PaidById = rahulUser.Id,
+                            PaidById = rahulUser!.Id,
                             SplitAs = SplitAs.Equally,
                             IsSettled = false
                         },
@@ -274,13 +274,13 @@ namespace ExpenSpend.Data.Context
                             Amount = 400,
                             Title = "Expense 4",
                             Description = "Expense 4 Description",
-                            PaidById = adityaUser.Id,
+                            PaidById = adityaUser!.Id,
                             SplitAs = SplitAs.Equally,
                             IsSettled = false
                         },
                         new Expense()
                         {
-                            GroupId = group2.Id,
+                            GroupId = group2!.Id,
                             CreatedBy = adminUser.Id,
                             CreatedAt = DateTime.Now,
                             Amount = 500,
@@ -313,8 +313,8 @@ namespace ExpenSpend.Data.Context
                     {
                         new Friendship()
                         {
-                            InitiatorId = adminUser.Id,
-                            RecipientId = userUser.Id,
+                            InitiatorId = adminUser!.Id,
+                            RecipientId = userUser!.Id,
                             Status = FriendshipStatus.Accepted,
                             CreatedAt = DateTime.Now,
                             CreatedBy = adminUser.Id
@@ -322,7 +322,7 @@ namespace ExpenSpend.Data.Context
                         new Friendship()
                         {
                             InitiatorId = adminUser.Id,
-                            RecipientId = rahulUser.Id,
+                            RecipientId = rahulUser!.Id,
                             Status = FriendshipStatus.Accepted,
                             CreatedAt = DateTime.Now,
                             CreatedBy = adminUser.Id
@@ -330,7 +330,7 @@ namespace ExpenSpend.Data.Context
                         new Friendship()
                         {
                             InitiatorId = adminUser.Id,
-                            RecipientId = adityaUser.Id,
+                            RecipientId = adityaUser!.Id,
                             Status = FriendshipStatus.Accepted,
                             CreatedAt = DateTime.Now,
                             CreatedBy = adminUser.Id

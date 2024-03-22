@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace ExpenSpend.Core.DTOs.Accounts
+namespace ExpenSpend.Domain.DTOs.Accounts
 {
     public class UserRegistrationResult
     {

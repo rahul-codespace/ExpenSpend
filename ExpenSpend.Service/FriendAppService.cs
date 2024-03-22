@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ExpenSpend.Core.DTOs.Friends.Enums;
+using ExpenSpend.Domain.DTOs.Friends.Enums;
 using ExpenSpend.Data.Context;
 using ExpenSpend.Domain;
 using ExpenSpend.Domain.Models.Friends;
@@ -8,6 +8,7 @@ using ExpenSpend.Service.Contracts;
 using ExpenSpend.Service.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using ExpenSpend.Domain.DTOs.Friends;
 
 namespace ExpenSpend.Service
 {
@@ -32,14 +33,14 @@ namespace ExpenSpend.Service
         public async Task<Response> GetAllFriendsAsync()
         {
             var friends = await _friendRepository.GetAllAsync();
-            return new Response(friends);
+            return new Response(_mapper.Map<GetFriendshipDto>(friends));
         }
         public async Task<Response> GetFriendshipRequestsAsync()
         {
             var currentUser = _httpContext.HttpContext?.User?.Identity?.Name;
             var currUser = await _context.Users.FirstOrDefaultAsync(u => u.UserName == currentUser);
             var friendRequests = await _context.Friendships
-            .Where(f => f.RecipientId == currUser.Id && f.Status == FriendshipStatus.Pending)
+            .Where(f => f.RecipientId == currUser!.Id && f.Status == FriendshipStatus.Pending)
             .Include(f => f.Initiator)
             .Include(f => f.Recipient)
             .ToListAsync();
@@ -47,14 +48,14 @@ namespace ExpenSpend.Service
             {
                 return new Response("No friend requests pending.");
             }
-            return new Response(friendRequests);
+            return new Response(_mapper.Map<List<GetFriendshipDto>>(friendRequests));
         }
         public async Task<Response> GetFriendshipsAsync()
         {
             var currentUser = _httpContext.HttpContext?.User?.Identity?.Name;
             var currUser = await _context.Users.FirstOrDefaultAsync(u => u.UserName == currentUser);
             var friends = await _context.Friendships
-            .Where(f => (f.InitiatorId == currUser.Id || f.RecipientId == currUser.Id) && f.Status == FriendshipStatus.Accepted)
+            .Where(f => (f.InitiatorId == currUser!.Id || f.RecipientId == currUser.Id) && f.Status == FriendshipStatus.Accepted)
             .Include(f => f.Initiator)
             .Include(f => f.Recipient)
             .ToListAsync();
@@ -62,9 +63,8 @@ namespace ExpenSpend.Service
             {
                 return new Response("No friends found.");
             }
-            return new Response(friends);
+            return new Response(_mapper.Map<List<GetFriendshipDto>>(friends));
         }
-
         public async Task<Response> GetFriendByIdAsync(Guid id)
         {
             var friend = await _friendRepository.GetByIdAsync(id);
@@ -72,23 +72,22 @@ namespace ExpenSpend.Service
             {
                 return new Response("Friend not found");
             }
-            return new Response(friend);
+            return new Response(_mapper.Map<GetFriendshipDto>(friend));
         }
-
         public async Task<Response> CreateFriendAsync(Guid recipientId)
         {
             var currentUser = _httpContext.HttpContext?.User?.Identity?.Name;
             var currUser = await _context.Users.FirstOrDefaultAsync(u => u.UserName == currentUser);
             var friend = new Friendship
             {
-                InitiatorId = currUser.Id,
+                InitiatorId = currUser!.Id,
                 RecipientId = recipientId,
                 Status = FriendshipStatus.Pending,
                 CreatedAt = DateTime.Now,
                 CreatedBy = currUser.Id
             };
             await _friendRepository.InsertAsync(friend);
-            return new Response(friend);
+            return new Response(_mapper.Map<GetFriendshipDto>(friend));
         }
         public async Task<Response> UpdateFriendAsync(Friendship friendship)
         {
@@ -110,7 +109,7 @@ namespace ExpenSpend.Service
             }
             friend.IsDeleted = true;
             await _friendRepository.UpdateAsync(friend);
-            return new Response(friend);
+            return new Response(_mapper.Map<GetFriendshipDto>(friend));
         }
         public async Task<Response> DeleteFriendAsync(Guid id)
         {
@@ -122,7 +121,6 @@ namespace ExpenSpend.Service
             await _friendRepository.DeleteAsync(friend);
             return new Response("Friend deleted successfully");
         }
-
         public async Task<Response> AcceptAsync(Guid friendshipId)
         {
             var friendship = await _friendRepository.GetByIdAsync(friendshipId);
@@ -132,7 +130,7 @@ namespace ExpenSpend.Service
             }
             friendship.Status = FriendshipStatus.Accepted;
             await _friendRepository.UpdateAsync(friendship);
-            return new Response(friendship);
+            return new Response(_mapper.Map<GetFriendshipDto>(friendship));
         }
         public async Task<Response> DeclineAsync(Guid friendshipId)
         {
@@ -144,7 +142,7 @@ namespace ExpenSpend.Service
 
             friendship.Status = FriendshipStatus.Declined;
             await _friendRepository.UpdateAsync(friendship);
-            return new Response(friendship);
+            return new Response(_mapper.Map<GetFriendshipDto>(friendship));
         }
         public async Task<Response> BlockAsync(Guid friendshipId)
         {
@@ -155,7 +153,7 @@ namespace ExpenSpend.Service
             }
             friendship.Status = FriendshipStatus.Blocked;
             await _friendRepository.UpdateAsync(friendship);
-            return new Response(friendship);
+            return new Response(_mapper.Map<GetFriendshipDto>(friendship));
         }
         public async Task<Response> UnBlockAsync(Guid friendshipId)
         {
@@ -166,7 +164,7 @@ namespace ExpenSpend.Service
             }
             friendship.Status = FriendshipStatus.Accepted;
             await _friendRepository.UpdateAsync(friendship);
-            return new Response(friendship);
+            return new Response(_mapper.Map<GetFriendshipDto>(friendship));
         }
     }
 }

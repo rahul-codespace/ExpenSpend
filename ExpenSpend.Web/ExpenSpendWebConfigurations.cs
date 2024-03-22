@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Text;
 using System.Text.Json.Serialization;
-using ExpenSpend.Core.DTOs.Emails;
+using ExpenSpend.Domain.DTOs.Emails;
 using ExpenSpend.Data.Context;
-using ExpenSpend.Data.Repository;
-using ExpenSpend.Domain;
-using ExpenSpend.Domain.Models.GroupMembers;
-using ExpenSpend.Domain.Models.Groups;
 using ExpenSpend.Domain.Models.Users;
 using ExpenSpend.Repository.Contracts;
 using ExpenSpend.Repository.Implementations;
@@ -50,14 +46,14 @@ public static class ExpenSpendWebConfigurations
             .AddDefaultTokenProviders();
     }
 
-    public static void AddCorsPolicy(this IServiceCollection services)
+    public static void AddCorsPolicy(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddCors(options =>
         {
             options.AddPolicy("CorsPolicy", builder =>
             {
                 builder
-                .WithOrigins("http://localhost:4200", "https://localhost:4200", "https://expenspend.azurewebsites.net")
+                .WithOrigins(configuration["Cors:AllowedOrigins"]!.Split(","))
                 .SetIsOriginAllowedToAllowWildcardSubdomains()
                 .AllowAnyHeader()
                 .AllowAnyMethod()
@@ -96,7 +92,6 @@ public static class ExpenSpendWebConfigurations
 
     public static void AddRepositories(this IServiceCollection services)
     {
-        services.AddScoped(typeof(IExpenSpendRepository<>), typeof(ExpenSpendRepository<>));
         services.AddScoped(typeof(IRepository<>), typeof(EntityFrameworkRepository<>));
         services.AddScoped<IAuthAppService, AuthAppService>();
         services.AddScoped<IUserAppService, UserAppService>();

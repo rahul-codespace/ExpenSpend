@@ -1,5 +1,7 @@
-﻿using ExpenSpend.Core.DTOs.GroupMembers;
+﻿using AutoMapper;
+using ExpenSpend.Domain.DTOs.GroupMembers;
 using ExpenSpend.Domain.Models.GroupMembers;
+using ExpenSpend.Service.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -7,79 +9,84 @@ using System.Threading.Tasks;
 
 namespace ExpenSpend.Web.Controllers
 {
-    [Route("api/group-member")]
+    [Route("api/group-members")]
     [ApiController]
     [Authorize]
     public class GroupMemberController : ControllerBase
     {
         private readonly IGroupMemberAppService _groupMemberService;
+        private readonly IMapper _mapper;
 
-        public GroupMemberController(IGroupMemberAppService groupMemberService)
+        public GroupMemberController(IGroupMemberAppService groupMemberService, IMapper mapper)
         {
             _groupMemberService = groupMemberService;
+            _mapper = mapper;
         }
-        [HttpGet("group-members")]
+
+        [HttpGet]
         public async Task<IActionResult> GetAllGroupMembers()
         {
             var groupMembers = await _groupMemberService.GetAllGroupMembersAsync();
-            if(groupMembers.StatusCode == 200)
+            if(groupMembers.IsSuccess)
             {
-                return Ok(groupMembers.Data);
+                return Ok(_mapper.Map<GetGroupMemberDto>(groupMembers.Data));
             }
-            return NotFound(groupMembers.Message);
+            return NotFound(groupMembers);
         }
-        [HttpGet("group-member/{id}")]
+
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetGroupMemberById(Guid id)
         {
             var groupMember = await _groupMemberService.GetGroupMemberByIdAsync(id);
-            if (groupMember.StatusCode == 200)
+            if(groupMember.IsSuccess)
             {
-                return Ok(groupMember.Data);
+                return Ok(_mapper);
             }
-            return NotFound(groupMember.Message);
+            return NotFound(groupMember);
         }
 
-        [HttpPost("group-member")]
+        [HttpPost]
         public async Task<IActionResult> CreateGroupMember(CreateGroupMemberDto input)
         {
             var result = await _groupMemberService.CreateGroupMemberAsync(input);
-            if (result.StatusCode == 201)
+            if (result.IsSuccess)
             {
                 return Ok(result.Data);
             }
-            return StatusCode(result.StatusCode, result.Message);
+            return BadRequest(result);
         }
 
-        [HttpPut("make-group-admin/{id}")]
+        [HttpPut("make-admin/{id}")]
         public async Task<IActionResult> MakeGroupAdmin(Guid id)
         {
-           var result = await _groupMemberService.MakeGroupAdminAsync(id);
-            if(result.StatusCode == 200)
+            var result = await _groupMemberService.MakeGroupAdminAsync(id);
+            if (result.IsSuccess)
             {
                 return Ok(result.Data);
             }
-            return StatusCode(result.StatusCode, result.Message);
+            return BadRequest(result);
         }
-        [HttpPut("remove-group-admin/{id}")]
+
+        [HttpPut("remove-admin/{id}")]
         public async Task<IActionResult> RemoveGroupAdmin(Guid id)
         {
             var result = await _groupMemberService.RemoveGroupAdminAsync(id);
-            if (result.StatusCode == 200)
+            if (result.IsSuccess)
             {
                 return Ok(result.Data);
             }
-            return StatusCode(result.StatusCode, result.Message);
+            return BadRequest(result);
         }
 
-        [HttpDelete("remove-group-member/{id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGroupMember(Guid id)
         {
             var result = await _groupMemberService.DeleteGroupMemberAsync(id);
-            if (result.StatusCode == 200)
+            if (result.IsSuccess)
             {
-                return Ok(result.Message);
+                return Ok(result.Data);
             }
-            return StatusCode(result.StatusCode, result.Message);
+            return BadRequest(result);
         }
     }
 }

@@ -1,23 +1,24 @@
 ﻿using AutoMapper;
-using ExpenSpend.Core.DTOs.Users;
+using ExpenSpend.Domain.DTOs.Users;
 using ExpenSpend.Data.Context;
-using ExpenSpend.Domain;
-using ExpenSpend.Domain.Helpers;
 using ExpenSpend.Domain.Models.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using ExpenSpend.Repository.Contracts;
+using ExpenSpend.Service.Models;
+using ExpenSpend.Service.Contracts;
 
 namespace ExpenSpend.Service;
 
 public class UserAppService : IUserAppService
 {
     private readonly UserManager<ESUser> _userManager;
-    private readonly IExpenSpendRepository<ESUser> _userRepository;
+    private readonly IRepository<ESUser> _userRepository;
     private readonly IMapper _mapper;
     private readonly ExpenSpendDbContext _context;
     private readonly IHttpContextAccessor _httpContext;
 
-    public UserAppService(UserManager<ESUser> userManager, IExpenSpendRepository<ESUser> userRepository, IMapper mapper, ExpenSpendDbContext expenSpendDbContext, IHttpContextAccessor httpContext)
+    public UserAppService(UserManager<ESUser> userManager, IRepository<ESUser> userRepository, IMapper mapper, ExpenSpendDbContext expenSpendDbContext, IHttpContextAccessor httpContext)
     {
         _userManager = userManager;
         _userRepository = userRepository;
@@ -26,70 +27,57 @@ public class UserAppService : IUserAppService
         _httpContext = httpContext;
     }
 
-    public async Task<GetUserDto> GetLoggedInUser()
+    public async Task<Response> GetLoggedInUser()
     {
-        var result = await _userManager.FindByNameAsync(_httpContext.HttpContext?.User?.Identity?.Name);
-        if (result != null)
+        var loggedInUserId = _httpContext.HttpContext.User.Identity?.Name;
+        if (loggedInUserId != null)
         {
-            return _mapper.Map<GetUserDto>(result);
+            var user = await _userManager.FindByIdAsync(loggedInUserId);
+            return new Response(_mapper.Map<GetUserDto>(user));
         }
         return null;
     }
-    public async Task<List<GetUserDto>> GetAllUsersAsync()
+    public async Task<Response> GetAllUsersAsync()
     {
-        return _mapper.Map<List<GetUserDto>>(await _userRepository.GetAllAsync());
+        return new Response(_mapper.Map<List<GetUserDto>>(await _userRepository.GetAllAsync()));
     }
-    public async Task<ESUser> GetUserByIdAsync(string id)
+    public async Task<Response> GetUserByIdAsync(string id)
     {
-        return await _userManager.FindByIdAsync(id);
+        return new Response(await _userManager.FindByIdAsync(id));
     }
-    public async Task<ESUser> GetUserByUserNameAsync(string userName)
+    public async Task<Response> GetUserByUserNameAsync(string userName)
     {
-        return await _userManager.FindByNameAsync(userName);
+        var user = await _userManager.FindByNameAsync(userName);
+        if (user != null)
+        {
+            return new Response(_mapper.Map<GetUserDto>(user));
+        }
+        return new Response("User not found!");
     }
-    public async Task<ApiResponse<GetUserDto>> UpdateUserAsync(Guid id, UpdateUserDto user)
+    public async Task<Response> UpdateUserAsync(Guid id, UpdateUserDto user)
     {
         var userToUpdate = await _userRepository.GetByIdAsync(id);
         if (userToUpdate == null)
         {
-            return new ApiResponse<GetUserDto>
-            {
-                Message = "User not found",
-                StatusCode = 404
-            };
+            return new Response("User not found!");
         }
-        var result = await _userRepository.UpdateAsync(_mapper.Map<ESUser>(userToUpdate));
-        if (result == null)
+        try
         {
-            return new ApiResponse<GetUserDto>
-            {
-                Message = "Bad Request",
-                StatusCode = 400
-            };
+            var updatedUser = _mapper.Map<ESUser>(userToUpdate);
+            await _userRepository.UpdateAsync(updatedUser);
+            return new Response(_mapper.Map<GetUserDto>(updatedUser));
         }
-        return new ApiResponse<GetUserDto>
+        catch (Exception ex)
         {
-            Data = _mapper.Map<GetUserDto>(user),
-            StatusCode = 201
-        };
+            return new Response("Somthing went wrong!");
+        }
     }
 
-    public async Task<ApiResponse<GetUserDto>> DeleteUserAsync(Guid id)
+    public async Task<Response> DeleteUserAsync(Guid id)
     {
-        var result = await _userRepository.DeleteAsync(id);
-        if (result)
-        {
-            return new ApiResponse<GetUserDto>
-            {
-                StatusCode = 204,
-                Message = "No Content"
-            };
-        }
-        return new ApiResponse<GetUserDto>
-        {
-            Message = "User not found",
-            StatusCode = 404
-        };
+        var user = await _userRepository.GetByIdAsync(id);
+        await _userRepository.DeleteAsync(user);
+        return new Response("User deleted successfully!");
     }
 
     public async Task<ESUser?> GetUserByEmailAsync(string email)

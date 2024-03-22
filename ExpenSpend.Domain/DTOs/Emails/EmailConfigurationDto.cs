@@ -1,4 +1,4 @@
-﻿namespace ExpenSpend.Core.DTOs.Emails;
+﻿namespace ExpenSpend.Domain.DTOs.Emails;
 
 public class EmailConfigurationDto
 {

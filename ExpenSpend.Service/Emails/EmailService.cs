@@ -1,7 +1,7 @@
 ﻿using ExpenSpend.Service.Emails.Interfaces;
 using MimeKit;
 using MailKit.Net.Smtp;
-using ExpenSpend.Core.DTOs.Emails;
+using ExpenSpend.Domain.DTOs.Emails;
 
 namespace ExpenSpend.Service.Emails;
 
@@ -12,7 +12,7 @@ public class EmailService : IEmailService
     {
         _emailConfig = emailConfig;
     }
-    public async void SendEmail(MessageDto email)
+    public void SendEmail(MessageDto email)
     {
         var emailMessage = CreateEmailMessage(email);
         MailSend(emailMessage);
@@ -20,7 +20,7 @@ public class EmailService : IEmailService
 
     public async Task<MessageDto> CreateEmailValidationTemplateMessage(string email, string confirmationCode)
     {
-        string emailTemplateFileName = "..\\ExpenSpend.Core\\DTOs\\Accounts\\Const\\EmailFormat.html";
+        string emailTemplateFileName = "..\\ExpenSpend.Domain\\DTOs\\Accounts\\Const\\EmailFormat.html";
         string emailBody;
 
         using (StreamReader reader = new StreamReader(emailTemplateFileName))
@@ -35,7 +35,7 @@ public class EmailService : IEmailService
 
     public async Task<string> EmailConfirmationPageTemplate()
     {
-        string emailTemplateFileName = "..\\ExpenSpend.Core\\DTOs\\Accounts\\Const\\EmailConfResponse.html";
+        string emailTemplateFileName = "..\\ExpenSpend.Domain\\DTOs\\Accounts\\Const\\EmailConfResponse.html";
         string htmlBody;
 
         using (StreamReader reader = new StreamReader(emailTemplateFileName))
@@ -84,7 +84,7 @@ public class EmailService : IEmailService
     }
     public async void SandPasswordChangeNotification(string email, string userName)
     {
-        string emailTemplateFileName = "..\\ExpenSpend.Core\\DTOs\\Accounts\\Const\\PasswordChangeNotification.html";
+        string emailTemplateFileName = "..\\ExpenSpend.Domain\\DTOs\\Accounts\\Const\\PasswordChangeNotification.html";
         string emailBody;
 
         using (StreamReader reader = new StreamReader(emailTemplateFileName))

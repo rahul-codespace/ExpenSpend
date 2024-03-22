@@ -1,4 +1,4 @@
-﻿using ExpenSpend.Core.DTOs.Friends;
+﻿using ExpenSpend.Domain.DTOs.Friends;
 using ExpenSpend.Service.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ExpenSpend.Web.Controllers
 {
-    [Route("api/friendship")]
+    [Route("api/friendships")]
     [ApiController]
     [Authorize]
     public class FriendshipController : ControllerBase
@@ -19,33 +19,33 @@ namespace ExpenSpend.Web.Controllers
             _friendService = friendService;
         }
 
-        [HttpGet("get-friendships")]
-        public async Task<ActionResult> GetFriendshipsAsync()
+        [HttpGet]
+        public async Task<IActionResult> GetAllFriendships()
         {
             var friendships = await _friendService.GetFriendshipsAsync();
-            if(friendships.IsSuccess)
+            if (friendships.IsSuccess)
             {
                 return Ok(friendships.Data);
             }
             return NotFound(friendships.Data);
         }
 
-        [HttpGet("get-friendship-requests")]
-        public async Task<IActionResult> GetFriendshipRequestsAsync()
+        [HttpGet("requests")]
+        public async Task<IActionResult> GetFriendshipRequests()
         {
-
             var friendshipRequests = await _friendService.GetFriendshipRequestsAsync();
-            if(friendshipRequests.IsSuccess)
+            if (friendshipRequests.IsSuccess)
             {
                 return Ok(friendshipRequests.Data);
             }
             return NotFound(friendshipRequests.Data);
         }
-        [HttpPost("create")]
-        public async Task<IActionResult> CreateAsync(CreateFriendshipDto friendshipDto)
+
+        [HttpPost]
+        public async Task<IActionResult> CreateFriendship(CreateFriendshipDto friendshipDto)
         {
             var newFriendship = await _friendService.CreateFriendAsync(friendshipDto.RecipientId);
-            if(newFriendship.IsSuccess)
+            if (newFriendship.IsSuccess)
             {
                 return Ok(newFriendship.Data);
             }
@@ -53,10 +53,10 @@ namespace ExpenSpend.Web.Controllers
         }
 
         [HttpPut("accept/{id}")]
-        public async Task<IActionResult> AcceptAsync(Guid id)
+        public async Task<IActionResult> AcceptFriendship(Guid id)
         {
             var friendship = await _friendService.AcceptAsync(id);
-            if(friendship.IsSuccess)
+            if (friendship.IsSuccess)
             {
                 return Ok(friendship.Data);
             }
@@ -64,10 +64,10 @@ namespace ExpenSpend.Web.Controllers
         }
 
         [HttpPut("decline/{id}")]
-        public async Task<IActionResult> DeclineAsync(Guid id)
+        public async Task<IActionResult> DeclineFriendship(Guid id)
         {
             var friendship = await _friendService.DeclineAsync(id);
-            if(friendship.IsSuccess)
+            if (friendship.IsSuccess)
             {
                 return Ok(friendship.Data);
             }
@@ -75,21 +75,21 @@ namespace ExpenSpend.Web.Controllers
         }
 
         [HttpPut("block/{id}")]
-        public async Task<IActionResult> BlockAsync(Guid id)
+        public async Task<IActionResult> BlockFriendship(Guid id)
         {
             var friendship = await _friendService.BlockAsync(id);
-            if(friendship.IsSuccess)
+            if (friendship.IsSuccess)
             {
                 return Ok(friendship.Data);
             }
             return NotFound(friendship.Data);
         }
 
-        [HttpDelete("remove/{id}")]
-        public async Task<IActionResult> DeleteAsync(Guid id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteFriendship(Guid id)
         {
             var friendship = await _friendService.SoftDeleteFriendAsync(id);
-            if(friendship.IsSuccess)
+            if (friendship.IsSuccess)
             {
                 return Ok(friendship.Data);
             }

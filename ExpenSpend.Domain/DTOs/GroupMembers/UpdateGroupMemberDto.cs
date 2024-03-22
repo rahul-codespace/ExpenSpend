@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-namespace ExpenSpend.Core.DTOs.GroupMembers;
+namespace ExpenSpend.Domain.DTOs.GroupMembers;
 
 public class UpdateGroupMemberDto
 {

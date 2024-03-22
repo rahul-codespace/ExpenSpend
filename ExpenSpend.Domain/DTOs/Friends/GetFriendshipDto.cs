@@ -1,14 +1,14 @@
-﻿using ExpenSpend.Core.DTOs.Friends.Enums;
-using ExpenSpend.Core.DTOs.Users;
+﻿using ExpenSpend.Domain.DTOs.Friends.Enums;
+using ExpenSpend.Domain.DTOs.Users;
 
-namespace ExpenSpend.Core.DTOs.Friends;
+namespace ExpenSpend.Domain.DTOs.Friends;
 
 public class GetFriendshipDto
 {
     public Guid Id { get; set; }
     public Guid InitiatorId { get; set; }
     public Guid RecipientId { get; set; }
-    public GetUserDto Recipient { get; set; }
+    public GetUserDto? Recipient { get; set; }
     public FriendshipStatus Status { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public Guid? CreatedBy { get; set; }

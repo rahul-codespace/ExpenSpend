@@ -1,6 +1,6 @@
 ﻿using MimeKit;
 
-namespace ExpenSpend.Core.DTOs.Emails;
+namespace ExpenSpend.Domain.DTOs.Emails;
 
 public class MessageDto
 {

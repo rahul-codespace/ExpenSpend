@@ -1,4 +1,4 @@
-﻿using ExpenSpend.Core.DTOs.Friends.Enums;
+﻿using ExpenSpend.Domain.DTOs.Friends.Enums;
 using ExpenSpend.Domain.Models.Users;
 
 namespace ExpenSpend.Domain.Models.Friends;

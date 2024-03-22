@@ -33,7 +33,7 @@ builder.Services.AddRepositories();
 builder.Services.AddSwaggerConfig();
 
 // Setup CORS policy.
-builder.Services.AddCorsPolicy();
+builder.Services.AddCorsPolicy(configuration);
 
 var app = builder.Build();
 

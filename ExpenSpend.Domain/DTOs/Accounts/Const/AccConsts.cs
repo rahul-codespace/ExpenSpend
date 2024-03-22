@@ -1,4 +1,4 @@
-﻿namespace ExpenSpend.Core.DTOs.Accounts.Const;
+﻿namespace ExpenSpend.Domain.DTOs.Accounts.Const;
 
 public class AccConsts
 {

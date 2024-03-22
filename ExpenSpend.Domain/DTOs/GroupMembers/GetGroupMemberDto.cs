@@ -1,7 +1,7 @@
-﻿using ExpenSpend.Core.DTOs.Groups;
-using ExpenSpend.Core.DTOs.Users;
+﻿using ExpenSpend.Domain.DTOs.Groups;
+using ExpenSpend.Domain.DTOs.Users;
 
-namespace ExpenSpend.Core.DTOs.GroupMembers;
+namespace ExpenSpend.Domain.DTOs.GroupMembers;
 
 public class GetGroupMemberDto
 {

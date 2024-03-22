@@ -1,5 +1,5 @@
-﻿using ExpenSpend.Core.DTOs.Groups;
-using ExpenSpend.Domain.Models.Groups;
+﻿using ExpenSpend.Domain.DTOs.Groups;
+using ExpenSpend.Service.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ExpenSpend.Web.Controllers
 {
     [ApiController]
-    [Route("api/group")]
+    [Route("api/groups")]
     [Authorize]
     public class GroupController : ControllerBase
     {
@@ -19,72 +19,77 @@ namespace ExpenSpend.Web.Controllers
             _groupAppService = groupAppService;
         }
 
-        [HttpGet("groups")]
+        [HttpGet]
         public async Task<IActionResult> GetAllGroups()
         {
             var groups = await _groupAppService.GetAllGroupsAsync();
-            return Ok(groups);
+            return Ok(groups.Data);
         }
-        [HttpGet("group/{id}")]
+
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetGroupById(Guid id)
         {
             var group = await _groupAppService.GetGroupByIdAsync(id);
-            if (group == null)
+            if (group.IsSuccess)
             {
-                return Ok(group);
+                return Ok(group.Data);
             }
-            return NotFound();
+            return NotFound(group);
         }
-        [HttpGet("groups/{userId}")]
+
+        [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetGroupsByUserId(Guid userId)
         {
             var groups = await _groupAppService.GetGroupsByUserId(userId);
-            if(groups.StatusCode == 200)
+            if(groups.IsSuccess)
             {
                 return Ok(groups.Data);
             }
-            return NotFound(groups.Message);
+            return NotFound(groups);
         }
-        [HttpPost("group")]
+
+        [HttpPost]
         public async Task<IActionResult> CreateGroup(CreateGroupDto input)
         {
             var result = await _groupAppService.CreateGroupAsync(input);
-            if (result.StatusCode == 201)
+            if (result.IsSuccess)
             {
                 return Ok(result.Data);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
-        [HttpPost("group-with-members")]
+
+        [HttpPost("with-members")]
         public async Task<IActionResult> CreateGroupWithMembers(CreateGroupWithMembersDto input)
         {
             var result = await _groupAppService.CreateGroupWithMembers(input);
-            if (result.StatusCode == 201)
+            if (result.IsSuccess)
             {
                 return Ok(result.Data);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
-        [HttpPut("group/{id}")]
+
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateGroup(Guid id, UpdateGroupDto input)
         {
-
-            var result = await _groupAppService.UpdateGroupAsync(id , input);
-            if (result.StatusCode == 200)
+            var result = await _groupAppService.UpdateGroupAsync(id, input);
+            if(result.IsSuccess)
             {
                 return Ok(result.Data);
             }
-            return StatusCode(result.StatusCode, result.Message);
+            return BadRequest(result);
         }
-        [HttpDelete("group/{id}")]
+
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGroup(Guid id)
         {
             var result = await _groupAppService.SoftDeleteAsync(id);
-            if(result.StatusCode == 200)
+            if (result.IsSuccess)
             {
                 return Ok(result.Data);
             }
-            return NotFound(result.Message);
+            return BadRequest(result);
         }
     }
 }

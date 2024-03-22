@@ -1,17 +1,18 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
-using ExpenSpend.Core.DTOs.Accounts;
-using ExpenSpend.Core.DTOs.Accounts.Const;
-using ExpenSpend.Core.DTOs.Users;
+using ExpenSpend.Domain.DTOs.Accounts.Const;
+using ExpenSpend.Domain.DTOs.Users;
+using ExpenSpend.Domain.DTOs.Accounts;
 using ExpenSpend.Domain.Models.Users;
 using ExpenSpend.Service.Emails.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ExpenSpend.Service.Contracts;
 
 namespace ExpenSpend.Web.Controllers;
 
-[Route("api/account")]
+[Route("api/auth")]
 [ApiController]
 public class AuthController : ControllerBase
 {

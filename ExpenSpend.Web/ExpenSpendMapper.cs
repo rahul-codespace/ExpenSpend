@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using ExpenSpend.Core.DTOs.Friends;
-using ExpenSpend.Core.DTOs.GroupMembers;
-using ExpenSpend.Core.DTOs.Groups;
-using ExpenSpend.Core.DTOs.Users;
+using ExpenSpend.Domain.DTOs.Friends;
+using ExpenSpend.Domain.DTOs.GroupMembers;
+using ExpenSpend.Domain.DTOs.Groups;
+using ExpenSpend.Domain.DTOs.Users;
 using ExpenSpend.Domain.Models.Friends;
 using ExpenSpend.Domain.Models.GroupMembers;
 using ExpenSpend.Domain.Models.Groups;

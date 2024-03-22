@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using ExpenSpend.Core.Users.Const;
+using ExpenSpend.Domain.Users.Const;
 
-namespace ExpenSpend.Core.DTOs.Users;
+namespace ExpenSpend.Domain.DTOs.Users;
 
 public class UpdateUserDto
 {

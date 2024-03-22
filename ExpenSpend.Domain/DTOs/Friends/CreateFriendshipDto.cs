@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ExpenSpend.Core.DTOs.Friends;
+namespace ExpenSpend.Domain.DTOs.Friends;
 
 public class CreateFriendshipDto
 {
