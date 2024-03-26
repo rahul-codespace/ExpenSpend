@@ -32,7 +32,7 @@ public class UserAppService : IUserAppService
         var loggedInUserId = _httpContext.HttpContext.User.Identity?.Name;
         if (loggedInUserId != null)
         {
-            var user = await _userManager.FindByIdAsync(loggedInUserId);
+            var user = await _userManager.FindByNameAsync(loggedInUserId);
             return new Response(_mapper.Map<GetUserDto>(user));
         }
         return null;

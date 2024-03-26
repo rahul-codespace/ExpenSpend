@@ -167,10 +167,6 @@ public class GroupAppService : IGroupAppService
     public async Task<Response> GetGroupsByUserId(Guid userId)
     {
         var groups = await _context.Groups.Where(x => x.Members!.Any(x => x.UserId == userId)).ToListAsync();
-        if (groups.Count == 0)
-        {
-           return new Response("Groups not found");
-        }
         return new Response(_mapper.Map<List<GetGroupDto>>(groups));
     }
 }

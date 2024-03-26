@@ -50,7 +50,7 @@ namespace ExpenSpend.Data.Context
                             ConcurrencyStamp ="1",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
-                            PasswordHash = hasher.HashPassword(null,"Admin@123")
+                            PasswordHash = hasher.HashPassword(null,password: "Admin@123")
                         },
                         new ESUser() {
                             Email = "user@gmail.com",
