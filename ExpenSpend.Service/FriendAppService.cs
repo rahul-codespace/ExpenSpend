@@ -15,13 +15,13 @@ namespace ExpenSpend.Service
     public class FriendAppService : IFriendAppService
     {
         private readonly IRepository<Friendship> _friendRepository;
-        private readonly ExpenSpendDbContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContext;
 
         public FriendAppService(
             IRepository<Friendship> friendRepository, 
-            ExpenSpendDbContext context, IMapper mapper,
+            ApplicationDbContext context, IMapper mapper,
             IHttpContextAccessor httpContext
         ){
             _friendRepository = friendRepository;
