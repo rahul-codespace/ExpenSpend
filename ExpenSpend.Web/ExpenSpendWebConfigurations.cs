@@ -18,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Builder;
 
 namespace ExpenSpend.Web;
 
@@ -132,5 +133,23 @@ public static class ExpenSpendWebConfigurations
                 }
             });
         });
+    }
+    public static void ApplyMigrations(this WebApplication app)
+    {
+        using (var scope = app.Services.CreateScope())
+        {
+            var serviceProvider = scope.ServiceProvider;
+            try
+            {
+                var dbContext = serviceProvider.GetRequiredService<ExpenSpendDbContext>();
+                dbContext.Database.Migrate();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error applying migrations: {ex.Message}");
+            }
+            // Seed Database
+            ExpenSpendDbInitializer.Seed(app);
+        }
     }
 }
