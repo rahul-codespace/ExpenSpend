@@ -123,6 +123,7 @@ public static class PlatformService
         services.AddScoped<IGroupAppService, GroupAppService>();
         services.AddScoped<IGroupMemberAppService, GroupMemberAppService>();
         services.AddScoped<IAuth0Service, Auth0Service>();
+        services.AddScoped<IPaymentAppService, PaymentAppService>();
         services.AddHttpContextAccessor();
     }
 
