@@ -9,5 +9,4 @@ public class CreateExpenseDto
     public Guid GroupId { get; set; }
     public double Amount { get; set; }
     public SplitAs SplitAs { get; set; } = SplitAs.Equally;
-    public bool IsSettled { get; set; }
 }

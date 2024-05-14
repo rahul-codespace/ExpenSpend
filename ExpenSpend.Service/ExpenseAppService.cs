@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ExpenSpend.Service
 {
-    public class ExpenseAppService
+    public class ExpenseAppService : IExpenseAppService
     {
         private readonly IRepository<Expense> _expenseRepository;
         private readonly ApplicationDbContext _context;
